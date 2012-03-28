@@ -11,5 +11,60 @@
 
     <artifactId>egov-data-hibernate</artifactId>
 
+    <developers>
+        <developer>
+            <id>whiteship</id>
+            <name>Keesun Baik</name>
+            <email>whiteship2000 at gmail.com</email>
+            <organization>SpringSprout</organization>
+            <organizationUrl>http://www.springsprout.org</organizationUrl>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+            <timezone>+9</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <comments>
+                Copyright 2011 the original author or authors.
+
+                Licensed under the Apache License, Version 2.0 (the "License");
+                you may not use this file except in compliance with the License.
+                You may obtain a copy of the License at
+
+                http://www.apache.org/licenses/LICENSE-2.0
+
+                Unless required by applicable law or agreed to in writing, software
+                distributed under the License is distributed on an "AS IS" BASIS,
+                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+                implied.
+                See the License for the specific language governing permissions and
+                limitations under the License.
+            </comments>
+        </license>
+    </licenses>
+
+    <properties>
+        <hibernate3.version>3.6.9.Final</hibernate3.version>
+        <hibernate4.version>4.1.1.Final</hibernate4.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.0.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate3.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
 </project>
