@@ -15,8 +15,6 @@
  */
 package egovframework.data.hibernate.repository.support;
 
-import com.sun.source.tree.AssertTree;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.SimpleDerivation;
 import egovframework.data.hibernate.repository.HibernateRepository;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -26,8 +24,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
