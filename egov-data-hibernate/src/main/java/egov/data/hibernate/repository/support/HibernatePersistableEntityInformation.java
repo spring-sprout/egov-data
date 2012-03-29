@@ -13,20 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package egovframework.data.hibernate.repository.support;
+package egov.data.hibernate.repository.support;
 
-import org.springframework.data.repository.core.EntityInformation;
+import org.hibernate.metadata.ClassMetadata;
+import org.springframework.data.domain.Persistable;
 
-import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author Keesun Baik
  */
-public interface HibernateEntityInformation<T, ID extends Serializable> extends EntityInformation<T, ID> {
+public class HibernatePersistableEntityInformation<T extends Persistable<ID>, ID extends Serializable> extends
+        HibernateMetamodelEntityInformation<T, ID> {
 
-    SingularAttribute<? super T, ?> getIdAttribute();
+    public HibernatePersistableEntityInformation(Class<T> domainClass, Map<String, ClassMetadata> metadata) {
+        super(domainClass, metadata);
+    }
 
-    String getEntityName();
-    
+    @Override
+    public boolean isNew(T entity) {
+        return entity.isNew();
+    }
+
+    @Override
+    public ID getId(T entity) {
+        return entity.getId();
+    }
 }

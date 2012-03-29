@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package egovframework.data.hibernate.repository.support;
+package egov.data.hibernate.repository.support;
 
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.*;

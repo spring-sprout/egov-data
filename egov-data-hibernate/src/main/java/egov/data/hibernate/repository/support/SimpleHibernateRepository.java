@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package egovframework.data.hibernate.repository.support;
+package egov.data.hibernate.repository.support;
 
-import egovframework.data.hibernate.repository.HibernateRepository;
+import egov.data.hibernate.repository.HibernateRepository;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

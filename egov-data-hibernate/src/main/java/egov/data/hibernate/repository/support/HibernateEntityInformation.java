@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2008-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package egovframework.data.hibernate.repository;
+package egov.data.hibernate.repository.support;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.core.EntityInformation;
 
+import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 
 /**
- *
  * @author Keesun Baik
  */
-public interface HibernateRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface HibernateEntityInformation<T, ID extends Serializable> extends EntityInformation<T, ID> {
 
+    SingularAttribute<? super T, ?> getIdAttribute();
+
+    String getEntityName();
+    
 }

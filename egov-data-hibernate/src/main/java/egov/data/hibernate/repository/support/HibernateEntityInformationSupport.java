@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package egovframework.data.hibernate.repository.support;
+package egov.data.hibernate.repository.support;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
@@ -44,7 +44,7 @@ public abstract class HibernateEntityInformationSupport<T, ID extends Serializab
         Map<String, ClassMetadata> metadata = sessionFactory.getAllClassMetadata();
 
         if(Persistable.class.isAssignableFrom(domainClass)) {
-            return new HibernatePersistableEntityInformain(domainClass, metadata);
+            return new HibernatePersistableEntityInformation(domainClass, metadata);
         } else {
             return new HibernateMetamodelEntityInformation(domainClass, metadata);
         }
