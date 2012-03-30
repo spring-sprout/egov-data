@@ -18,7 +18,6 @@ package egov.data.hibernate.repository.config;
 import org.springframework.data.repository.config.AutomaticRepositoryConfigInformation;
 import org.springframework.data.repository.config.ManualRepositoryConfigInformation;
 import org.springframework.data.repository.config.RepositoryConfig;
-import org.springframework.data.repository.config.SingleRepositoryConfigInformation;
 import org.w3c.dom.Element;
 
 /**

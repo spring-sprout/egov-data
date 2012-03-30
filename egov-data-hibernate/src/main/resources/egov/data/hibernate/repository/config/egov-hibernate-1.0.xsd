@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="http://www.egovframe.org/schema/data/hibernate"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tool="http://www.springframework.org/schema/tool"
+            xmlns:context="http://www.springframework.org/schema/context"
+            xmlns:repository="http://www.springframework.org/schema/data/repository"
+            targetNamespace="http://www.egovframe.org/schema/data/hibernate"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/tool" />
+    <xsd:import namespace="http://www.springframework.org/schema/context"
+                schemaLocation="http://www.springframework.org/schema/context/spring-context.xsd" />
+    <xsd:import namespace="http://www.springframework.org/schema/data/repository"
+                schemaLocation="http://www.springframework.org/schema/data/repository/spring-repository.xsd" />
+
+    <xsd:complexType name="hibernate-repository">
+        <xsd:complexContent>
+            <xsd:extension base="repository:repository">
+                <xsd:attributeGroup ref="repository:transactional-repository-attributes" />
+                <xsd:attribute name="session-factory-ref" type="sessionFactoryRef" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="repositories">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="repository:repositories">
+                    <xsd:sequence>
+                        <xsd:element name="repository" minOccurs="0" maxOccurs="unbounded" type="hibernate-repository" />
+                    </xsd:sequence>
+                    <xsd:attributeGroup ref="repository:transactional-repository-attributes" />
+                    <xsd:attribute name="session-factory-ref" type="sessionFactoryRef" />
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="auditing">
+        <xsd:complexType>
+            <xsd:attribute name="auditor-aware-ref">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:assignable-to
+                                    type="org.synyx.hades.domain.auditing.AuditorAware" />
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="set-dates" default="true" type="xsd:boolean" />
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="sessionFactoryRef">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <tool:annotation kind="ref">
+                    <tool:assignable-to type="org.springframework.orm.hibernate3.AnnotationSessionFactoryBean" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:union memberTypes="xsd:string" />
+    </xsd:simpleType>
+
+
+</xsd:schema>

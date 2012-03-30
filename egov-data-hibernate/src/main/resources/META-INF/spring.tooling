@@ -1,0 +1,4 @@
+# Tooling related information for the Hibernate namespace
+http\://www.egovframe.org/schema/data/hibernate@name=Hibernate Namespace
+http\://www.egovframe.org/schema/data/hibernate@prefix=hibernate
+http\://www.egovframe.org/schema/data/hibernate@icon=org/springframework/jdbc/config/spring-jdbc.gif
