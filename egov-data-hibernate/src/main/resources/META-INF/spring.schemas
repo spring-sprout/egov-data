@@ -1,2 +1,2 @@
-http\://www.egovframe.org/schema/data/hibernate/egov-hibernate-1.0.xsd=egov/data/hiberante/repository/config/egov-hibernate-1.0.xsd
-http\://www.egovframe.org/schema/data/hibernate/egov-hibernate.xsd=egov/data/hiberante/repository/config/egov-hibernate-1.0.xsd
+http\://www.egovframe.org/schema/data/hibernate/egov-hibernate-1.0.xsd=config/egov-hibernate-1.0.xsd
+http\://www.egovframe.org/schema/data/hibernate/egov-hibernate.xsd=config/egov-hibernate-1.0.xsd

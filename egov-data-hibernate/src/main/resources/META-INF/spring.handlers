@@ -1,1 +1,1 @@
-http\://www.egovframe.org/schema/data/hibernate=egov.data.hibernate.repository.config.HibernateRepositoryNameSpaceHandler
+http\://www.egovframe.org/schema/data/hibernate=egov.data.hibernate.repository.config.HibernateRepositoryNamespaceHandler

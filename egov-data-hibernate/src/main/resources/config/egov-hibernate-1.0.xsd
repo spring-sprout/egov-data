@@ -36,32 +36,15 @@
         </xsd:complexType>
     </xsd:element>
 
-    <xsd:element name="auditing">
-        <xsd:complexType>
-            <xsd:attribute name="auditor-aware-ref">
-                <xsd:annotation>
-                    <xsd:appinfo>
-                        <tool:annotation kind="ref">
-                            <tool:assignable-to
-                                    type="org.synyx.hades.domain.auditing.AuditorAware" />
-                        </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="set-dates" default="true" type="xsd:boolean" />
-        </xsd:complexType>
-    </xsd:element>
-
     <xsd:simpleType name="sessionFactoryRef">
         <xsd:annotation>
             <xsd:appinfo>
                 <tool:annotation kind="ref">
-                    <tool:assignable-to type="org.springframework.orm.hibernate3.AnnotationSessionFactoryBean" />
+                    <tool:assignable-to type="org.springframework.orm.hibernate3.AbstractSessionFactoryBean" />
                 </tool:annotation>
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:union memberTypes="xsd:string" />
     </xsd:simpleType>
-
 
 </xsd:schema>

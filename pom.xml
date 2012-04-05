@@ -7,10 +7,11 @@
     <groupId>egov-data</groupId>
     <artifactId>egov-data</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <modules>
         <module>egov-data-ibatis</module>
         <module>egov-data-hibernate</module>
+        <module>egov-data-hibernate-sample</module>
     </modules>
 
     <dependencies>

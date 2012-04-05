@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:hibernate="http://www.egovframe.org/schema/data/hibernate"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.egovframe.org/schema/data/hibernate http://www.egovframe.org/schema/data/hibernate/egov-hibernate.xsd">
+
+   <hibernate:repositories base-package="" />
+
+
+</beans>
