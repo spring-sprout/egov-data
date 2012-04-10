@@ -48,7 +48,7 @@ public class SimpleHibernateRepositoryConfiguration extends
 
 	@Override
 	public String getNamedQueriesLocation() {
-		return null;
+		return "classpath*:META-INF/hibernate-named-queries.properties";
 	}
 
 	public String getSessionFactoryRef() {

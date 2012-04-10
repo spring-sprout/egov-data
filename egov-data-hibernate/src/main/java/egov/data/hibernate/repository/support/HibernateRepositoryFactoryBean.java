@@ -30,7 +30,11 @@ import java.io.Serializable;
 public class HibernateRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable> extends
 		TransactionalRepositoryFactoryBeanSupport<T, S, ID> {
 
-	@Autowired SessionFactory sessionFactory;
+	SessionFactory sessionFactory;
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	@Override
 	protected RepositoryFactorySupport doCreateRepositoryFactory() {

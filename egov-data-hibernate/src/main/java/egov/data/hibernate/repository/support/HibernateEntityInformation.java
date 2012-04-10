@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 public interface HibernateEntityInformation<T, ID extends Serializable> extends EntityInformation<T, ID> {
 
-    SingularAttribute<? super T, ?> getIdAttribute();
+//    SingularAttribute<? super T, ?> getIdAttribute();
 
     String getEntityName();
     

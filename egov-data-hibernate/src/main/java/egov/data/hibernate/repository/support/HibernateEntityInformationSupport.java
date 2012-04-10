@@ -40,8 +40,8 @@ public abstract class HibernateEntityInformationSupport<T, ID extends Serializab
     public static <T> HibernateEntityInformation<T, ?> getMetadata(Class<T> domainClass, SessionFactory sessionFactory) {
         Assert.notNull(domainClass);
         Assert.notNull(sessionFactory);
-        
-        Map<String, ClassMetadata> metadata = sessionFactory.getAllClassMetadata();
+
+	    ClassMetadata metadata = sessionFactory.getClassMetadata(domainClass);
 
         if(Persistable.class.isAssignableFrom(domainClass)) {
             return new HibernatePersistableEntityInformation(domainClass, metadata);

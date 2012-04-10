@@ -27,7 +27,7 @@ import java.util.Map;
 public class HibernatePersistableEntityInformation<T extends Persistable<ID>, ID extends Serializable> extends
         HibernateMetamodelEntityInformation<T, ID> {
 
-    public HibernatePersistableEntityInformation(Class<T> domainClass, Map<String, ClassMetadata> metadata) {
+    public HibernatePersistableEntityInformation(Class<T> domainClass, ClassMetadata metadata) {
         super(domainClass, metadata);
     }
 

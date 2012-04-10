@@ -49,7 +49,7 @@ public class HibernateRepositoryConfigDefinitionParser
 
 		String sessionFactoryRef = StringUtils.hasText(ctx.getSessionFactoryRef()) ? ctx.getSessionFactoryRef()
 				: DEFAULT_SESSION_FACTORY_BEAN_NAME;
-		builder.addPropertyValue(DEFAULT_SESSION_FACTORY_BEAN_NAME, sessionFactoryRef);
+		builder.addPropertyReference(DEFAULT_SESSION_FACTORY_BEAN_NAME, sessionFactoryRef);
 	}
 
 	@Override

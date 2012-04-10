@@ -15,7 +15,7 @@ import whiteship.dao.MemberRepository;
 @ContextConfiguration("/applicationContext.xml")
 public class HibernateRepositoryTests {
 
-//    @Autowired MemberRepository memberRepository;
+    @Autowired MemberRepository memberRepository;
     @Autowired SessionFactory sessionFactory;
 
     @Test

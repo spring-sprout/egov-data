@@ -16,6 +16,8 @@
 package egov.data.hibernate.repository.support;
 
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.type.IdentifierType;
+import org.hibernate.type.Type;
 import org.springframework.beans.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -36,100 +38,86 @@ import java.util.Set;
 public class HibernateMetamodelEntityInformation<T, ID extends Serializable> extends HibernateEntityInformationSupport<T, ID>
         implements HibernateEntityInformation<T, ID> {
 
-    private final IdMetadata<T> idMetadata;
+    private final Type idType;
+	private final String idProperty;
 
-    public HibernateMetamodelEntityInformation(Class<T> domainClass, Map<String, ClassMetadata> metadata) {
+    public HibernateMetamodelEntityInformation(Class<T> domainClass, ClassMetadata metadata) {
         super(domainClass);
 
         Assert.notNull(metadata);
-        ClassMetadata classMetadata = metadata.get(domainClass.getName());
-
-        if (!(classMetadata instanceof IdentifiableType)) {
+	    
+        Type idType = metadata.getIdentifierType();
+        if (idType == null) {
             throw new IllegalArgumentException("The given domain class does not contain an id attribute!");
         }
+	    
+	    String idProperty = metadata.getIdentifierPropertyName();
 
-        this.idMetadata = new IdMetadata<T>((IdentifiableType<T>) classMetadata);
+        this.idType = idType;
+	    this.idProperty = idProperty;
     }
 
     @Override
     public ID getId(T entity) {
         BeanWrapper entityWrapper = new DirectFieldAccessFallbackBeanWrapper(entity);
-
-        if (idMetadata.hasSimpleId()) {
-            return (ID) entityWrapper.getPropertyValue(idMetadata.getSimpleIdAttribute().getName());
-        }
-
-        BeanWrapper idWrapper = new DirectFieldAccessFallbackBeanWrapper(idMetadata.getType());
-        boolean partialIdValueFound = false;
-
-        for (SingularAttribute<? super T, ?> attribute : idMetadata) {
-            Object propertyValue = entityWrapper.getPropertyValue(attribute.getName());
-
-            if (propertyValue != null) {
-                partialIdValueFound = true;
-            }
-
-            idWrapper.setPropertyValue(attribute.getName(), propertyValue);
-        }
-
-        return (ID) (partialIdValueFound ? idWrapper.getWrappedInstance() : null);
+		return (ID) entityWrapper.getPropertyValue(idProperty);
     }
 
     @Override
     public Class<ID> getIdType() {
-        return (Class<ID>) idMetadata.getType();
+        return idType.getReturnedClass();
     }
 
-    @Override
-    public SingularAttribute<? super T, ?> getIdAttribute() {
-        return idMetadata.getSimpleIdAttribute();
-    }
+//    @Override
+//    public SingularAttribute<? super T, ?> getIdAttribute() {
+//        return idMetadata.getSimpleIdAttribute();
+//    }
 
-    /**
-     * Simple value object to encapsulate id specific metadata.
-     *
-     * @author Oliver Gierke
-     */
-    private static class IdMetadata<T> implements Iterable<SingularAttribute<? super T, ?>> {
-
-        private final IdentifiableType<T> type;
-        private final Set<SingularAttribute<? super T, ?>> attributes;
-
-        @SuppressWarnings("unchecked")
-        public IdMetadata(IdentifiableType<T> source) {
-
-            this.type = source;
-            this.attributes = (Set<SingularAttribute<? super T, ?>>) (source.hasSingleIdAttribute() ? Collections
-                    .singleton(source.getId(source.getIdType().getJavaType())) : source.getIdClassAttributes());
-        }
-
-        public boolean hasSimpleId() {
-            return attributes.size() == 1;
-        }
-
-        public Class<?> getType() {
-
-            try {
-                return type.getIdType().getJavaType();
-            } catch (IllegalStateException e) {
-                // see https://hibernate.onjira.com/browse/HHH-6951
-                IdClass annotation = type.getJavaType().getAnnotation(IdClass.class);
-                return annotation == null ? null : annotation.value();
-            }
-        }
-
-        public SingularAttribute<? super T, ?> getSimpleIdAttribute() {
-            return attributes.iterator().next();
-        }
-
-        /*
-           * (non-Javadoc)
-           * @see java.lang.Iterable#iterator()
-           */
-        public Iterator<SingularAttribute<? super T, ?>> iterator() {
-            return attributes.iterator();
-        }
-    }
+//    /**
+//     * Simple value object to encapsulate id specific metadata.
+//     *
+//     * @author Oliver Gierke
+//     */
+//    private static class IdMetadata<T> implements Iterable<SingularAttribute<? super T, ?>> {
+//
+//        private final IdentifiableType<T> type;
+//        private final Set<SingularAttribute<? super T, ?>> attributes;
+//
+//        @SuppressWarnings("unchecked")
+//        public IdMetadata(IdentifiableType<T> source) {
+//
+//            this.type = source;
+//            this.attributes = (Set<SingularAttribute<? super T, ?>>) (source.hasSingleIdAttribute() ? Collections
+//                    .singleton(source.getId(source.getIdType().getJavaType())) : source.getIdClassAttributes());
+//        }
+//
+//        public boolean hasSimpleId() {
+//            return attributes.size() == 1;
+//        }
+//
+//        public Class<?> getType() {
+//
+//            try {
+//                return type.getIdType().getJavaType();
+//            } catch (IllegalStateException e) {
+//                // see https://hibernate.onjira.com/browse/HHH-6951
+//                IdClass annotation = type.getJavaType().getAnnotation(IdClass.class);
+//                return annotation == null ? null : annotation.value();
+//            }
+//        }
+//
+//        public SingularAttribute<? super T, ?> getSimpleIdAttribute() {
+//            return attributes.iterator().next();
+//        }
+//
+//        /*
+//           * (non-Javadoc)
+//           * @see java.lang.Iterable#iterator()
+//           */
+//        public Iterator<SingularAttribute<? super T, ?>> iterator() {
+//            return attributes.iterator();
+//        }
+//    }
 
     /**
      * Custom extension of {@link BeanWrapperImpl} that falls back to direct field access in case the object or type being

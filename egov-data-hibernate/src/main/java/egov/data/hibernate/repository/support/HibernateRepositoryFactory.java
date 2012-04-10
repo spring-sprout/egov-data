@@ -17,13 +17,16 @@ package egov.data.hibernate.repository.support;
 
 import egov.data.hibernate.repository.HibernateRepository;
 import org.hibernate.SessionFactory;
+import org.springframework.data.repository.core.NamedQueries;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
+import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /**
  * @author Keesun Baik
@@ -113,7 +116,16 @@ public class HibernateRepositoryFactory extends RepositoryFactorySupport {
 	protected QueryLookupStrategy getQueryLookupStrategy(QueryLookupStrategy.Key key) {
 		// TODO
 //		return JpaQueryLookupStrategy.create(entityManager, key, extractor);
-		return null;
+		return new StubQueryLookupStrategy();
+	}
+
+	// TODO
+	class StubQueryLookupStrategy implements QueryLookupStrategy {
+		@Override
+		public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, NamedQueries namedQueries) {
+			// TODO
+			return null;
+		}
 	}
 
 	/*
