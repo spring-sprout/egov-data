@@ -3,27 +3,36 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:hibernate="http://www.egovframe.org/schema/data/hibernate"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.egovframe.org/schema/data/hibernate http://www.egovframe.org/schema/data/hibernate/egov-hibernate.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <hibernate:repositories base-package="whiteship" />
 
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+          <!--p:driverClass="#{appProperties['db.driverClass']}"-->
+          <!--p:jdbcUrl="#{appProperties['db.jdbcUrl']}"-->
+          <!--p:user="#{appProperties['db.user']}"-->
+          <!--p:password="#{appProperties['db.password']}"-->
+          <!--destroy-method="close" />-->
+
     <jdbc:embedded-database id="dataSource" type="HSQL" />
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="whiteship.domain"/>
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="whiteship.domain" />
         <property name="hibernateProperties">
             <props>
-                <prop key="dialect">org.hibernate.dialect.HSQLDialect</prop>
-                <prop key="hbm2ddl.auto">update</prop>
-                <prop key="show_sql">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-       <property name="sessionFactory" ref="sessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
 </beans>

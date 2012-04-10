@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+
+    <comment>Test Configuration</comment>
+
+    <!-- dataSource config -->
+    <entry key="db.driverClass">com.mysql.jdbc.Driver</entry>
+    <entry key="db.jdbcUrl">jdbc:mysql://localhost/egdata?characterEncoding=utf8</entry>
+    <entry key="db.user">egdata</entry>
+    <entry key="db.password">egdata</entry>
+
+    <!-- hibernate config -->
+    <entry key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</entry>
+    <entry key="hibernate.show_sql">true</entry>
+    <entry key="hibernate.format_sql">true</entry>
+    <entry key="hibernate.hbm2ddl.auto">update</entry>
+
+</properties>

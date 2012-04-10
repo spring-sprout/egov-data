@@ -126,13 +126,8 @@ public class SimpleHibernateRepository<T, ID extends Serializable> implements Hi
 
     @Transactional
     public T save(T entity) {
-        if(entityInformation.isNew(entity)) {
-            getSession().save(entity);
-            return entity;
-        } else {
-            getSession().update(entity);
-            return entity;
-        }
+        getSession().saveOrUpdate(entity);
+	    return entity;
     }
 
     @Transactional
