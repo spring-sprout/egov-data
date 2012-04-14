@@ -1,0 +1,4 @@
+# Tooling related information for the eGov iBatis namespace
+http\://www.egovframe.org/schema/data/ibatis@name=eGov iBatis Namespace
+http\://www.egovframe.org/schema/data/ibatis@prefix=ibatis
+http\://www.egovframe.org/schema/data/ibatis@icon=org/springframework/jdbc/config/spring-jdbc.gif
