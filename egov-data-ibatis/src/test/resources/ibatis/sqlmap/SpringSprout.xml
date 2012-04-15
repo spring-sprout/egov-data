@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SpringSprout">
+
+    <typeAlias alias="SpringSprout" type="egov.data.ibatis.sample.domain.SpringSprout"/>
+
+	<select id="findAll" resultClass="SpringSprout">
+		SELECT * FROM SPRINGSPROUT
+    </select>    
+    
+    <select id="findByName" parameterClass="string" resultClass="SpringSprout">
+		SELECT * FROM SPRINGSPROUT WHERE NAME = #name#
+    </select>
+
+    <insert id="insert" parameterClass="SpringSprout">
+        INSERT INTO SPRINGSPROUT(NAME) VALUES(#name#);
+        <selectKey resultClass="long" keyProperty="id">
+            CALL IDENTITY()
+        </selectKey>
+    </insert>
+    
+    <update id="update" parameterClass="SpringSprout">
+		UPDATE SPRINGSPROUT SET NAME = #name# WHERE ID = #id# 
+    </update>
+    
+    <delete id="delete" parameterClass="long">
+        DELETE FROM SPRINGSPROUT WHERE ID = #id#
+    </delete>
+    
+</sqlMap>

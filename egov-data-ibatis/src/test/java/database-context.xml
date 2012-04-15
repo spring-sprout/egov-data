@@ -7,6 +7,8 @@
         http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
     <jdbc:embedded-database id="dataSource" type="H2">
+    	<jdbc:script location="classpath:sqlScript/schema.sql"/>
+    	<jdbc:script location="classpath:sqlScript/data.sql"/>
     </jdbc:embedded-database>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -16,6 +18,11 @@
     <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:ibatis/sqlMapConfig.xml" />
+        <property name="mappingLocations" value="classpath:ibatis/sqlmap/*.xml" />
+    </bean>
+    
+    <bean class="org.springframework.jdbc.core.JdbcTemplate">
+    	<constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
     
 </beans>
