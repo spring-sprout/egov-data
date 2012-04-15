@@ -58,7 +58,11 @@ public class SqlMapQuery implements RepositoryQuery {
 	            return template.queryForList(queryMethod.getNamedQueryName(), parameterObject);
 	        }
 		} else if(StatementType.INSERT.equals(statementType)) {
-			return template.insert(queryMethod.getNamedQueryName(), parameterObject);
+			// 돌려받은 Key 를 어떻게 도메인에 할당할지 고민해보기
+			@SuppressWarnings("unused")
+			Object insert = template.insert(queryMethod.getNamedQueryName(), parameterObject);
+			
+			return parameterObject;
 		} else if(StatementType.UPDATE.equals(statementType)) {
 			return template.update(queryMethod.getNamedQueryName(), parameterObject);
 		} else if(StatementType.DELETE.equals(statementType)) {
