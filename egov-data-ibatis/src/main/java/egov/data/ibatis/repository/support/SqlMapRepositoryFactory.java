@@ -36,6 +36,7 @@ import com.ibatis.sqlmap.engine.impl.SqlMapClientImpl;
 import com.ibatis.sqlmap.engine.impl.SqlMapExecutorDelegate;
 
 import egov.data.ibatis.repository.SimpleSqlMapRepository;
+import egov.data.ibatis.repository.SqlMapRepository;
 import egov.data.ibatis.repository.query.SqlMapQuery;
 
 /**
@@ -79,7 +80,7 @@ public class SqlMapRepositoryFactory extends RepositoryFactorySupport {
 
 	@Override
 	protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-		return metadata.getRepositoryInterface();
+		return SqlMapRepository.class;
 	}
 	
 	@Override
