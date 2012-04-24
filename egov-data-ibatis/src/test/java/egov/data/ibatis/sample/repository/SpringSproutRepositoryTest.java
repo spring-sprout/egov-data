@@ -39,6 +39,7 @@ public class SpringSproutRepositoryTest {
 		int before = count();
 		
 		registerTestSpringSprouts();
+		checkIdInjected();
 		
 		assertThat(count(), is(before + 3));
 	}
@@ -97,6 +98,12 @@ public class SpringSproutRepositoryTest {
 		first = repository.insert(first);
 		second = repository.insert(second);
 		third = repository.insert(third);
+	}
+	
+	void checkIdInjected() {
+		assertThat(first.getId(), is(not(0L)));
+		assertThat(second.getId(), is(not(0L)));
+		assertThat(third.getId(), is(not(0L)));
 	}
 
 }
