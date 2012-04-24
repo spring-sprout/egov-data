@@ -39,9 +39,17 @@ public class SpringSproutRepositoryTest {
 		int before = count();
 		
 		registerTestSpringSprouts();
-		checkIdInjected();
 		
 		assertThat(count(), is(before + 3));
+	}
+	
+	@Test
+	public void testIdInjected() throws Exception {
+		repository.insert(first);
+		repository.insert(second);
+		repository.insert(third);
+		
+		checkIdInjected();
 	}
 	
 	@Test
