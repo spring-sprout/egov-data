@@ -109,9 +109,9 @@ public class SpringSproutRepositoryTest {
 	}
 	
 	void checkIdInjected() {
-		assertThat(first.getId(), is(not(0L)));
-		assertThat(second.getId(), is(not(0L)));
-		assertThat(third.getId(), is(not(0L)));
+		assertThat(first.getId(), is(notNullValue()));
+		assertThat(second.getId(), is(notNullValue()));
+		assertThat(third.getId(), is(notNullValue()));
 	}
 
 }
