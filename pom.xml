@@ -15,7 +15,6 @@
     </properties>
     
     <modules>
-        <module>egov-data-ibatis</module>
         <module>egov-data-hibernate</module>
         <module>egov-data-hibernate-sample</module>
     </modules>

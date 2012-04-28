@@ -3,31 +3,80 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     
-    <parent>
-        <artifactId>egov-data</artifactId>
-        <groupId>egov-data</groupId>
-        <version>1.0.0</version>
-    </parent>
-    
-    <artifactId>egov-data-ibatis</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    
-	<properties>
+    <groupId>egov-data</groupId>
+    <artifactId>egov-data-ibatis</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.1</version>
 
+    <properties>
+        <java.version>1.6</java.version>
+        <spring.version>3.0.5.RELEASE</spring.version>
     </properties>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<additionalProjectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+						<projectnatures>org.maven.ide.eclipse.maven2Nature</projectnatures>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+						<buildcommands>org.maven.ide.eclipse.maven2Builder</buildcommands>
+					</additionalBuildcommands>
+				</configuration>
+			</plugin>
+        </plugins>
+    </build>
+    
     <dependencies>
+    	<dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons-core</artifactId>
+            <version>1.1.0.RELEASE</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6</version>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
 		<dependency>
             <groupId>org.apache.ibatis</groupId>
             <artifactId>ibatis-sqlmap</artifactId>
             <version>2.3.4.726</version>
             <scope>provided</scope>
+        </dependency>
+        
+        <!-- Logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.4</version>
         </dependency>
 		
         <!-- Test -->
