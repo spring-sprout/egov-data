@@ -26,7 +26,8 @@ public class SqlMapRepositoryTest {
 	@Resource(name="anotherSqlMapClient") SqlMapClient anotherSqlMapClient;
 	
 	TestAutomaticRepository automaticRepository; 
-	TestManualRepository manualRepository; 
+	TestManualRepository manualRepository;
+	TestDomainObjectRepository customRepository;
 
 	@Test
 	public void AutomaticRepository가_올바르게_생성되었는가() {
@@ -42,6 +43,13 @@ public class SqlMapRepositoryTest {
 		assertThat(manualRepository, is(notNullValue()));
 		assertThat(manualRepository.getSqlMapClient(), not(sqlMapClient));
 		assertThat(manualRepository.getSqlMapClient(), is(anotherSqlMapClient));
+	}
+	
+	@Test
+	public void CustomRepository가_올바르게_생성되었는가() {
+		customRepository = applicationContext.getBean(TestDomainObjectRepository.class);
+		assertThat(customRepository, is(notNullValue()));
+		assertThat(customRepository.alwaysTrue(), is(true));
 	}
 
 }
