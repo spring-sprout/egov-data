@@ -3,6 +3,8 @@ package egov.data.ibatis.repository;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class SqlMapRepositoryTest {
 	TestAutomaticRepository automaticRepository; 
 	TestManualRepository manualRepository;
 	TestDomainObjectRepository customRepository;
-
+	
 	@Test
 	public void AutomaticRepository가_올바르게_생성되었는가() {
 		automaticRepository = applicationContext.getBean(TestAutomaticRepository.class);
@@ -50,6 +52,14 @@ public class SqlMapRepositoryTest {
 		customRepository = applicationContext.getBean(TestDomainObjectRepository.class);
 		assertThat(customRepository, is(notNullValue()));
 		assertThat(customRepository.alwaysTrue(), is(true));
+	}
+	
+	@Test
+	public void SqlMapRepository는_생성되어서는_안된다() {
+		@SuppressWarnings("rawtypes")
+		Map<String, SqlMapRepository> repositories =  applicationContext.getBeansOfType(SqlMapRepository.class);
+		
+		assertThat(repositories.size(), is(3));
 	}
 
 }
