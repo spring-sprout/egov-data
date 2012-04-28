@@ -11,8 +11,12 @@
 
     <import resource="classpath:database-context.xml"/>
     
+    <!-- AutomaticSqlMapRepositoryConfigInformation -->
+    <ibatis:repositories base-package="egov.data.ibatis.repository"/>
+    
+    <!-- ManualSqlMapRepositoryConfigInformation -->
     <ibatis:repositories base-package="egov.data.ibatis.repository">
-    	<ibatis:repository id="testDomainObjectRepository" sqlmap-client-ref="anotherSqlMapClient"/>
+    	<ibatis:repository id="testManualRepository" sqlmap-client-ref="anotherSqlMapClient"/>
     </ibatis:repositories>
     
 </beans>

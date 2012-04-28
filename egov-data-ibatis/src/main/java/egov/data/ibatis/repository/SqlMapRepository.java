@@ -17,6 +17,7 @@ package egov.data.ibatis.repository;
 
 import java.io.Serializable;
 
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -26,6 +27,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
  * 
  * @author Yongkwon Park
  */
+@NoRepositoryBean
 public interface SqlMapRepository<T, ID extends Serializable> extends Repository<T, ID> {
 	
 	SqlMapClient getSqlMapClient();
