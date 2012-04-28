@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class SqlMapRepositoryTest {
+public class AutomaticSqlMapRepositoryGenerationTest {
 	
 	@Autowired TestDomainObjectRepository repository; 
 
