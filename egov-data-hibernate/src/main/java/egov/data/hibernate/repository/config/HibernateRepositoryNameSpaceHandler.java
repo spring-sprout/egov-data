@@ -20,7 +20,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 /**
  * @author Keesun Baik
  */
-public class HibernateRepositoryNamespaceHandler extends NamespaceHandlerSupport {
+public class HibernateRepositoryNameSpaceHandler extends NamespaceHandlerSupport {
 
 	public void init() {
 		registerBeanDefinitionParser("repositories", new HibernateRepositoryConfigDefinitionParser());
