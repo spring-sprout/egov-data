@@ -7,11 +7,12 @@
     <meta name="description" content="eGov-Data : 표준프레임워크와 Spring Data의 만남" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/prettify.css">
+	<script type="text/javascript" src="javascripts/prettify.js"></script>
     <title>eGov-Data</title>
   </head>
 
-  <body>
+  <body onload="prettyPrint()">
 
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
@@ -31,28 +32,111 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h3>eGov-Data 프로젝트는?</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><a href="http://www.springsource.org/spring-data">Spring Data</a> 프로젝트의 주요 목표는 스프링 기반 애플리케이션이 데이터 접근 기술을 보다 손쉽게 사용할 수 있게 해주는 것입니다. <a href="https://github.com/spring-sprout/egov-data">eGov-Data</a> 프로젝트는 <a href="http://www.egovframe.go.kr/">표준프레임워크</a>에서 사용하는 <a href="http://www.hibernate.org">Hibernate</a>와 <a href="http://ibatis.apache.org/">iBatis</a> 기반 데이터 접근 계층에 Spring Data의 핵심 기능을 제공합니다.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>이 프로젝트는 두개의 세부 모듈로 구성되어 있습니다.
+<ul>
+	<li>eGov Data iBatis</li>
+	<li>eGov Data Hibernate</li>
+</ul></p>
+
+<h4>eGov Data iBatis</h4>
+
+<pre class="prettyprint"><code class="lang-java">public class BookRepository extends SqlMapRepository&#60;Book, Integer&#62; {
+
+  Book getById(Integer id);
+  
+  List<Book> getAll();
+
+}
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>
+아이바티스를 사용하신다면 위와 같이 SqlMapRepository를 상속받는 인터페이스를 만들고 그 안에 SQL 키값과 동일한 이름을 가진 메서드를 정의하시면 됩니다. 구현체는 만드실 필요 없습니다.
+</p>
 
-<h3>Designer Templates</h3>
+<pre class="prettyprint"><code class="lang-xml">&#60;?xml version="1.0" encoding="UTF-8"?&#62;
+&#60;beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ibatis="http://www.egovframe.org/schema/data/ibatis"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd"&#62;
+    
+    &#60;ibatis:repositories base-package="egov.data.ibatis.sample.repository"/&#62;
+    
+&#60;/beans&#62;</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>이렇게 간단한 XML 빈 설정만 추가하시면 구현체는 자동으로 생성됩니다.</p>
 
-<h3>Rather Drive Stick?</h3>
+<pre class="prettyprint"><code class="lang-java">@Service
+public class DefaultBookService implements BookService {
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+  @Autowired BookRepository repository;
 
-<h3>Authors and Contributors</h3>
+}
+</code></pre>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>이렇게 BookRepository 인터페이스 타입의 빈이 등록되어있는 것처럼 어디서든지 @Autowired/@Inject/@Resource 등을 사용하여 주입받아 사용하시면 됩니다.</p>
+
+<p>eGov Data iBatis의 자세한 내용이 궁금하시면 <a href="#">가이드 문서</a>를 참고하시기 바랍니다.</p>
+
+<h4>eGov Data Hibernate</h4>
+
+<pre class="prettyprint"><code class="lang-java">public class BookRepository extends HibernateRepository&#60;Book, Integer&#62; {
+
+
+}
+</code></pre>
+
+<p>eGov Data Hibernate를 사용하시면 위와 같이 HibernateRepository를 상속받은 인터페이스만 만들면 기본적인 CRUD 기능과 Paging 및 Sorting 기능을 제공합니다.</p>
+
+<pre class="prettyprint"><code class="lang-xml">&#60;?xml version="1.0" encoding="UTF-8"?&#62;
+&#60;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:hibernate="http://www.egovframe.org/schema/data/hibernate"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.egovframe.org/schema/data/hibernate http://www.egovframe.org/schema/data/hibernate/egov-hibernate.xsd"&#62;
+
+    &#60;hibernate:repositories base-package="whiteship" /&#62;
+
+&#60;/beans&#62;</code></pre>
+
+<p>이렇게 간단한 XML 빈 설정만 추가하시면 구현체는 자동으로 생성됩니다.</p>
+
+<pre class="prettyprint"><code class="lang-java">@Service
+public class DefaultBookService implements BookService {
+
+  @Autowired BookRepository repository;
+
+}
+</code></pre>
+
+<p>이렇게 BookRepository 인터페이스 타입의 빈이 등록되어있는 것처럼 어디서든지 @Autowired/@Inject/@Resource 등을 사용하여 주입받아 사용하시면 됩니다.</p>
+
+<p>eGov Data Hibernate의 자세한 내용이 궁금하시면 <a href="#">가이드 문서</a>를 참고하시기 바랍니다.</p>
+
+<h3>주요 기능</h3>
+
+<ul>
+	<li>기본 CRUD 메서드 구현 제공.</li>
+	<li>쿼리 메서드 이름을 사용한 동적 쿼리 생성.</li>
+	<li>커스텀 리포지토리 코드 연동.</li>
+	<li>커스텀 네임스페이스 제공.</li>
+</ul>
+
+<h3>프로젝트에 참여하고 싶다면</h3>
+
+<p>여러가지 방법으로 참여할 수 있습니다.</p>
+
+<ul>
+	<li><a href="https://groups.google.com/forum/?fromgroups#!forum/springsprout">봄싹 그룹스</a>에 가입하시고 이 프로젝트와 관련된 의견을 남겨주세요. 봄싹에서 이 프로젝트 개발자들과 의사소통 할 수 있습니다.</li>
+	<li>개선할 것이나 버그가 있다면 Github에 <a href="https://github.com/spring-sprout/egov-data/issues">이슈</a>를 만들어 주세요.</li>
+	<li>Github을 사용해서 소셜 코딩을 하고 싶다면 이 프로젝트를 포크하시고 코드를 작성하신 다음 풀 리퀘스르틀 해주세요. 풀 리퀘스트를 하실때는 반드시 누구나 이해할 수 있도록 충분히 친절하게 설명을 남겨주시고 관련된 이슈가 있다면 이슈 번호도 남겨주시기 바랍니다.</li>
+	<li>마지막으로 지속적으로 관심 가지고 보고 싶다면 이 프로젝트를 <a href="https://github.com/spring-sprout/egov-data/toggle_watch">Watch</a>하시거나 <a href="https://github.com/spring-sprout/egov-data/fork_select">Fork</a> 해주세요.</li>
+</ul>
+
 
 <h3>Support or Contact</h3>
 
