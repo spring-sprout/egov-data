@@ -17,6 +17,7 @@ package egov.data.ibatis.repository;
 
 import java.io.Serializable;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -29,7 +30,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
  * @param <T> the type of the entity to handle
  * @param <ID> the type of the entity's identifier
  */
-@org.springframework.stereotype.Repository
+@Repository
 @Transactional(readOnly=true)
 public class SimpleSqlMapRepository<T, ID extends Serializable> implements SqlMapRepository<T, ID> {
 
