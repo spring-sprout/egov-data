@@ -1,0 +1,8 @@
+language: java
+script: "make test"
+branches:
+  only:
+    - master
+notifications:
+  email:
+    - outsideris@gmail.com
