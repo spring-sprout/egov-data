@@ -1,4 +1,5 @@
 language: java
+install: "make compile"
 script: "make test"
 branches:
   only:
