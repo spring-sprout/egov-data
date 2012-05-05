@@ -1,4 +1,4 @@
-# eGov Data #
+# eGov Data [![Build Status](https://secure.travis-ci.org/spring-sprout/egov-data.png?branch=master)](http://travis-ci.org/spring-sprout/egov-data)
 
 [Spring Data](http://www.springsource.org/spring-data) 프로젝트의 주요 목표는 스프링 기반 애플리케이션이 데이터 접근 기술을 보다 손쉽게 사용할 수 있게 해주는 것입니다. 이 모듈은 표준프레임워크에서 사용하는 Hibernate와 iBatis 기반 데이터 접근 계층에 [Spring Data](http://www.springsource.org/spring-data)의 핵심 기능을 제공합니다.
 
