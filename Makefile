@@ -1,12 +1,7 @@
-compile:
-	cd egov-data-ibatis; \
-  mvn compile
-	cd egov-data-hibernate; \
-  mvn compile
 test:
 	cd egov-data-ibatis; \
-	mvn test -X
+	mvn test
 	cd egov-data-hibernate; \
-	mvn test -X
+	mvn test
 
-.PHONY: test compile
+.PHONY: test
