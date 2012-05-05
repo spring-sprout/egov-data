@@ -1,5 +1,4 @@
 language: java
-install: "make compile"
 script: "make test"
 branches:
   only:
@@ -7,3 +6,8 @@ branches:
 notifications:
   email:
     - outsideris@gmail.com
+    - daclouds@gmail.com
+    - ethdemor@gmail.com
+    - whiteship2000@gmail.com
+    - kmiracle@gmail.com
+    - arawn.kr@gmail.com
