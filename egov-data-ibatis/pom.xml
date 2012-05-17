@@ -31,12 +31,16 @@
 				<version>2.9</version>
 				<configuration>
 					<additionalProjectnatures>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-						<projectnatures>org.maven.ide.eclipse.maven2Nature</projectnatures>
+						<projectnatures>
+							<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+							<projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
+						</projectnatures>
 					</additionalProjectnatures>
 					<additionalBuildcommands>
-						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-						<buildcommands>org.maven.ide.eclipse.maven2Builder</buildcommands>
+						<buildcommands>
+							<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+							<buildcommand>org.maven.ide.eclipse.maven2Builder</buildcommand>
+						</buildcommands>
 					</additionalBuildcommands>
 				</configuration>
 			</plugin>
