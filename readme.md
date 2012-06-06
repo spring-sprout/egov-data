@@ -32,5 +32,5 @@
 * [김정우](https://github.com/miracle0k)
 * [박용권](https://github.com/arawn)
 * [백기선](https://github.com/keesun)
-* [석종일](https://github.com/miracle0k)
+* [석종일](https://github.com/daclouds)
 * [최윤석](https://github.com/ethdemor)
