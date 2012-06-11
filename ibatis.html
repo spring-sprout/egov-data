@@ -32,20 +32,23 @@
 			<section id="main_content" class="inner">
 				<h3>eGov-Data-iBatis Quick Start</h3>
 				
+				<p>이 가이드는 eGov-Data-iBatis 1.0.0 버전을 기준으로 작성되었습니다.</p>
+				
 				<h4>Setup</h4>
 				<ol>
 					<li>
 						프로젝트 다운로드<br/>
-						<pre class="prettyprint">git clone https://github.com/spring-sprout/egov-data.git</pre>
+						<pre class="prettyprint">git clone https://github.com/spring-sprout/egov-data.git</pre><br/>
 					</li>
 					<li>
 						Maven을 사용해 jar 생성<br/>
-						<pre class="prettyprint">mvn jar:jar</pre>
+						<pre class="prettyprint">mvn jar:jar</pre><br/>
 					</li>
 					<li>classpath에 target/egov-data-ibatis.[version].jar 추가</li>
 				</ol>
 				
-				<h4>Entity</h4>
+				<h4>Domain</h4>
+				<p>데이터베이스 스키마와 매핑되는 클래스를 작성합니다.</p>
 <pre class="prettyprint">
 public class SpringSprout {
 	private Long id;
@@ -56,6 +59,7 @@ public class SpringSprout {
 </pre>
 				
 				<h4>Repository</h4>
+				<p>Spring Data에서 Repository 인터페이스는 가장 핵심적인 역할을 합니다. 스키마의 PK 타입과 도메인 클래스를 제네릭 타입으로 선언한 뒤, 쿼리 메소드를 작성하면 이를 실제 쿼리로 만들어 주기 때문입니다. eGov-Data-iBatis는 그러한 역할 보단 iBatis 본래의 취지를 살려 여러분이 작성한 SqlMap 구문과 쿼리 메소드를 연결해 주는 역할을 합니다.</p>
 <pre class="prettyprint">
 public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout, Long&#62 {
 
@@ -72,6 +76,7 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
 	// ..기타 다른 메소드
 }
 </pre>
+				<p>SqlMapRepository 인터페이스를 확장해 SqlMap에 선언한 구문과 같게 메소드를 정의하면, 실제 구현체를 만들 필요 없이 바로 SqlMap 구문을 호출 가능합니다. 이때, 여러분이 정의한 인터페이스 이름이 SqlMap의 네임스페이스가 되고 메소드 이름은 각 구문의 id가 됩니다. 이것은 기본 전략으로 다른 매핑 전략을 제공할 예정입니다.</p>
 				
 				<h4>SqlMap.xml</h4>
 <pre class="prettyprint">
@@ -80,31 +85,32 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd"&#62
 &#60sqlMap namespace="SpringSprout"&#62
 
-    &#60typeAlias alias="SpringSprout" type="egov.data.ibatis.sample.domain.SpringSprout"/&#62
+	&#60typeAlias alias="SpringSprout" type="egov.data.ibatis.sample.domain.SpringSprout"/&#62
 
 	&#60select id="findAll" resultClass="SpringSprout"&#62
 		SELECT * FROM SPRINGSPROUT
-    &#60/select&#62    
-    &#60select id="findByName" parameterClass="string" resultClass="SpringSprout"&#62
+	&#60/select&#62    
+	&#60select id="findByName" parameterClass="string" resultClass="SpringSprout"&#62
 		SELECT * FROM SPRINGSPROUT WHERE NAME = #name#
-    &#60/select&#62
-    &#60select id="findOne" parameterClass="long" resultClass="SpringSprout"&#62
+	&#60/select&#62
+	&#60select id="findOne" parameterClass="long" resultClass="SpringSprout"&#62
 		SELECT * FROM SPRINGSPROUT WHERE ID = #id#
-    &#60/select&#62
-    &#60insert id="insert" parameterClass="SpringSprout"&#62
-        INSERT INTO SPRINGSPROUT(NAME) VALUES(#name#);
-        &#60selectKey resultClass="long" keyProperty="id"&#62
-            CALL IDENTITY()
-        &#60/selectKey&#62
-    &#60/insert&#62
-    &#60update id="update" parameterClass="SpringSprout"&#62
+	&#60/select&#62
+	&#60insert id="insert" parameterClass="SpringSprout"&#62
+		INSERT INTO SPRINGSPROUT(NAME) VALUES(#name#);
+		&#60selectKey resultClass="long" keyProperty="id"&#62
+			CALL IDENTITY()
+		&#60/selectKey&#62
+	&#60/insert&#62
+	&#60update id="update" parameterClass="SpringSprout"&#62
 		UPDATE SPRINGSPROUT SET NAME = #name# WHERE ID = #id# 
-    &#60/update&#62
+	&#60/update&#62
     
 &#60/sqlMap&#62
 </pre>
 				
 				<h4>applicationContext.xml</h4>
+				<p>여기에서는 테스트를 위해 내장형 DB를 사용했지만 iBatis가 지원하는 모든 DBMS를 사용 가능합니다. &#60ibatis:repositories&#62에 base-package 속성으로 특정 패키지를 지정하면 하위 패키지를 포함해 SqlMapRepository 타입의 클래스들을 자동으로 빈으로 등록합니다. 또한, &#60ibatis:repositories&#62에 중첩 태그로 &#60ibatis:repository&#62를 선언해 특정 클래스를 지정할 수도 있습니다.</p>
 <pre class="prettyprint">
 &#60?xml version="1.0" encoding="UTF-8"?&#62
 &#60beans xmlns="http://www.springframework.org/schema/beans"
@@ -117,8 +123,8 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
 		http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd"&#62
 	
 	&#60jdbc:embedded-database id="dataSource" type="H2"&#62
-    	&#60jdbc:script location="classpath:sqlScript/schema.sql"/&#62
-    &#60/jdbc:embedded-database&#62
+		&#60jdbc:script location="classpath:sqlScript/schema.sql"/&#62
+	&#60/jdbc:embedded-database&#62
     
     &#60bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"&#62
         &#60property name="dataSource" ref="dataSource" /&#62
@@ -128,10 +134,11 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
     
     &#60ibatis:repositories base-package="egov.data.ibatis.sample.repository"/&#62
 	
-&#60/beans&#60
+&#60/beans&#62
 </pre>
 				
 				<h4>Test</h4>
+				<p>만들어 둔 Repository 인터페이스를 주입 받아 메소드를 호출하면 &#60클래스이름.메소드이름&#62에 해당하는 SqlMap 구문을 호출합니다.</p>
 <pre class="prettyprint">
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
