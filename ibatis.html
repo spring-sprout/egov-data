@@ -76,7 +76,7 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
 	// ..기타 다른 메소드
 }
 </pre>
-				<p>SqlMapRepository 인터페이스를 확장해 SqlMap에 선언한 구문과 같게 메소드를 정의하면, 실제 구현체를 만들 필요 없이 바로 SqlMap 구문을 호출 가능합니다. 이때, 여러분이 정의한 인터페이스 이름이 SqlMap의 네임스페이스가 되고 메소드 이름은 각 구문의 id가 됩니다. 이것은 기본 전략으로 다른 매핑 전략을 제공할 예정입니다.</p>
+				<p>SqlMapRepository 인터페이스를 확장해 SqlMap에 선언한 구문과 같은 의미를 지니도록 메소드를 정의하면, 실제 구현체를 만들 필요없이 바로 SqlMap 구문을 호출 가능합니다. 이때, 제네릭 타입으로 지정한 도메인 클래스의 이름이 SqlMap의 네임스페이스가 되고 메소드 이름은 각 구문의 id가 됩니다. 이것은 기본 전략으로 다른 매핑 전략을 제공할 예정입니다. 따라서 위의 Repository 인터페이스는 SpringSprout라는 네임스페이스를 가진 SqlMap과 연결됩니다.</p>
 				
 				<h4>SqlMap.xml</h4>
 <pre class="prettyprint">
@@ -138,7 +138,7 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
 </pre>
 				
 				<h4>Test</h4>
-				<p>만들어 둔 Repository 인터페이스를 주입 받아 메소드를 호출하면 &#60클래스이름.메소드이름&#62에 해당하는 SqlMap 구문을 호출합니다.</p>
+				<p>만들어 둔 Repository 인터페이스를 주입 받아 메소드를 호출하면 &#60도메인 클래스이름.메소드 이름&#62에 해당하는 SqlMap 구문이 호출됩니다.</p>
 <pre class="prettyprint">
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
