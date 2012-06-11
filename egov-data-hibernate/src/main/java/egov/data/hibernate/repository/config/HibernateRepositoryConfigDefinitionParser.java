@@ -54,22 +54,15 @@ public class HibernateRepositoryConfigDefinitionParser
 
 	@Override
 	protected void registerBeansForRoot(BeanDefinitionRegistry registry, Object source) {
-
 		super.registerBeansForRoot(registry, source);
-
 		if (!hasBean(PET_POST_PROCESSOR, registry)) {
-
 			AbstractBeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(PET_POST_PROCESSOR)
 					.getBeanDefinition();
-
 			registerWithSourceAndGeneratedBeanName(registry, definition, source);
 		}
-
 		if (!hasBean(PAB_POST_PROCESSOR, registry)) {
-
 			AbstractBeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(PAB_POST_PROCESSOR)
 					.getBeanDefinition();
-
 			registerWithSourceAndGeneratedBeanName(registry, definition, source);
 		}
 	}

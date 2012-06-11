@@ -68,57 +68,6 @@ public class HibernateMetamodelEntityInformation<T, ID extends Serializable> ext
         return idType.getReturnedClass();
     }
 
-//    @Override
-//    public SingularAttribute<? super T, ?> getIdAttribute() {
-//        return idMetadata.getSimpleIdAttribute();
-//    }
-
-//    /**
-//     * Simple value object to encapsulate id specific metadata.
-//     *
-//     * @author Oliver Gierke
-//     */
-//    private static class IdMetadata<T> implements Iterable<SingularAttribute<? super T, ?>> {
-//
-//        private final IdentifiableType<T> type;
-//        private final Set<SingularAttribute<? super T, ?>> attributes;
-//
-//        @SuppressWarnings("unchecked")
-//        public IdMetadata(IdentifiableType<T> source) {
-//
-//            this.type = source;
-//            this.attributes = (Set<SingularAttribute<? super T, ?>>) (source.hasSingleIdAttribute() ? Collections
-//                    .singleton(source.getId(source.getIdType().getJavaType())) : source.getIdClassAttributes());
-//        }
-//
-//        public boolean hasSimpleId() {
-//            return attributes.size() == 1;
-//        }
-//
-//        public Class<?> getType() {
-//
-//            try {
-//                return type.getIdType().getJavaType();
-//            } catch (IllegalStateException e) {
-//                // see https://hibernate.onjira.com/browse/HHH-6951
-//                IdClass annotation = type.getJavaType().getAnnotation(IdClass.class);
-//                return annotation == null ? null : annotation.value();
-//            }
-//        }
-//
-//        public SingularAttribute<? super T, ?> getSimpleIdAttribute() {
-//            return attributes.iterator().next();
-//        }
-//
-//        /*
-//           * (non-Javadoc)
-//           * @see java.lang.Iterable#iterator()
-//           */
-//        public Iterator<SingularAttribute<? super T, ?>> iterator() {
-//            return attributes.iterator();
-//        }
-//    }
-
     /**
      * Custom extension of {@link BeanWrapperImpl} that falls back to direct field access in case the object or type being
      * wrapped does not use accessor methods.

@@ -150,6 +150,17 @@ public class SimpleHibernateRepository<T, ID extends Serializable> implements Hi
         getSession().flush();
     }
 
+	@Transactional
+	public void clear() {
+		getSession().clear();
+	}
+
+	@Transactional
+	public void flushAndClear() {
+		getSession().flush();
+		getSession().clear();
+	}
+
     @Transactional
     public T saveAndFlush(T entity) {
         T result = save(entity);

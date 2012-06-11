@@ -27,9 +27,22 @@ public class HibernateRepositoryTests {
 
     @Test
     public void save(){
+	    // Create
 	    Member member = new Member();
 	    member.setName("keesun");
 	    memberRepository.save(member);
 	    assertThat(member.getId(), is(not(0)));
+
+	    // Read
+	    Member keesun = memberRepository.findOne(member.getId());
+	    assertThat(keesun.getName(), is("keesun"));
+
+	    // Update
+	    member.setName("whiteship");
+	    memberRepository.save(member);
+	    memberRepository.flush();
+
+	    // Delete
+	    memberRepository.delete(member);
     }
 }

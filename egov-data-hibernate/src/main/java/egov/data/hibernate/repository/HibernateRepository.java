@@ -25,4 +25,8 @@ import java.io.Serializable;
  */
 public interface HibernateRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
 
+	void clear();
+
+	void flushAndClear();
+
 }
