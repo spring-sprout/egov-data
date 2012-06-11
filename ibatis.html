@@ -46,17 +46,17 @@
 				</ol>
 				
 				<h4>Entity</h4>
-				<code class="prettyprint">
+				<pre class="prettyprint">
 					public class SpringSprout {
 						private Long id;
 						private String name;
 						
 						// Getters and setters
 					}
-				</code>
+				</pre>
 				
 				<h4>Repository</h4>
-				<code class="prettyprint">
+				<pre class="prettyprint">
 					public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout, Long&#62 {
 	
 						public List&#60SpringSprout&#62 findAll();
@@ -71,10 +71,10 @@
 						
 						// ..기타 다른 메소드
 					}
-				</code>
+				</pre>
 				
 				<h4>SqlMap.xml</h4>
-				<code class="prettyprint">
+				<pre class="prettyprint">
 					&#60?xml version="1.0" encoding="UTF-8"?&#62
 					&#60!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
 						"http://ibatis.apache.org/dtd/sql-map-2.dtd"&#62
@@ -102,10 +102,10 @@
 					    &#60/update&#62
 					    
 					&#60/sqlMap&#62
-				</code>
+				</pre>
 				
 				<h4>applicationContext.xml</h4>
-				<code class="prettyprint">
+				<pre class="prettyprint">
 					&#60?xml version="1.0" encoding="UTF-8"?&#62
 					&#60beans xmlns="http://www.springframework.org/schema/beans"
 						xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -129,10 +129,10 @@
 					    &#60ibatis:repositories base-package="egov.data.ibatis.sample.repository"/&#62
 						
 					&#60/beans&#60		
-				</code>
+				</pre>
 				
 				<h4>Test</h4>
-				<code class="prettyprint">
+				<pre class="prettyprint">
 					@RunWith(SpringJUnit4ClassRunner.class)
 					@ContextConfiguration
 					public class SpringSproutRepositoryTest {
@@ -161,7 +161,7 @@
 						
 						// ..기타 테스트 메소드
 					}
-				</code>
+				</pre>
 				
 			</section>
 		</div>
