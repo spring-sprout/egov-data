@@ -42,126 +42,126 @@
 						Maven을 사용해 jar 생성<br/>
 						<pre class="prettyprint">mvn jar:jar</pre>
 					</li>
-					<li><pre class="prettyprint">classpath에 target/egov-data-ibatis.[version].jar 추가</pre></li>
+					<li>classpath에 target/egov-data-ibatis.[version].jar 추가</li>
 				</ol>
 				
 				<h4>Entity</h4>
-				<pre class="prettyprint">
-					public class SpringSprout {
-						private Long id;
-						private String name;
-						
-						// Getters and setters
-					}
-				</pre>
+<pre class="prettyprint">
+public class SpringSprout {
+	private Long id;
+	private String name;
+	
+	// Getters and setters
+}
+</pre>
 				
 				<h4>Repository</h4>
-				<pre class="prettyprint">
-					public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout, Long&#62 {
+<pre class="prettyprint">
+public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout, Long&#62 {
+
+	public List&#60SpringSprout&#62 findAll();
 	
-						public List&#60SpringSprout&#62 findAll();
-						
-						public SpringSprout findByName(String name);
-						
-						public SpringSprout insert(SpringSprout springSprout);
-						
-						public int update(SpringSprout springSprout);
-						
-						public int delete(Long id);
-						
-						// ..기타 다른 메소드
-					}
-				</pre>
+	public SpringSprout findByName(String name);
+	
+	public SpringSprout insert(SpringSprout springSprout);
+	
+	public int update(SpringSprout springSprout);
+	
+	public int delete(Long id);
+	
+	// ..기타 다른 메소드
+}
+</pre>
 				
 				<h4>SqlMap.xml</h4>
-				<pre class="prettyprint">
-					&#60?xml version="1.0" encoding="UTF-8"?&#62
-					&#60!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
-						"http://ibatis.apache.org/dtd/sql-map-2.dtd"&#62
-					&#60sqlMap namespace="SpringSprout"&#62
-					
-					    &#60typeAlias alias="SpringSprout" type="egov.data.ibatis.sample.domain.SpringSprout"/&#62
-					
-						&#60select id="findAll" resultClass="SpringSprout"&#62
-							SELECT * FROM SPRINGSPROUT
-					    &#60/select&#62    
-					    &#60select id="findByName" parameterClass="string" resultClass="SpringSprout"&#62
-							SELECT * FROM SPRINGSPROUT WHERE NAME = #name#
-					    &#60/select&#62
-					    &#60select id="findOne" parameterClass="long" resultClass="SpringSprout"&#62
-							SELECT * FROM SPRINGSPROUT WHERE ID = #id#
-					    &#60/select&#62
-					    &#60insert id="insert" parameterClass="SpringSprout"&#62
-					        INSERT INTO SPRINGSPROUT(NAME) VALUES(#name#);
-					        &#60selectKey resultClass="long" keyProperty="id"&#62
-					            CALL IDENTITY()
-					        &#60/selectKey&#62
-					    &#60/insert&#62
-					    &#60update id="update" parameterClass="SpringSprout"&#62
-							UPDATE SPRINGSPROUT SET NAME = #name# WHERE ID = #id# 
-					    &#60/update&#62
-					    
-					&#60/sqlMap&#62
-				</pre>
+<pre class="prettyprint">
+&#60?xml version="1.0" encoding="UTF-8"?&#62
+&#60!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd"&#62
+&#60sqlMap namespace="SpringSprout"&#62
+
+    &#60typeAlias alias="SpringSprout" type="egov.data.ibatis.sample.domain.SpringSprout"/&#62
+
+	&#60select id="findAll" resultClass="SpringSprout"&#62
+		SELECT * FROM SPRINGSPROUT
+    &#60/select&#62    
+    &#60select id="findByName" parameterClass="string" resultClass="SpringSprout"&#62
+		SELECT * FROM SPRINGSPROUT WHERE NAME = #name#
+    &#60/select&#62
+    &#60select id="findOne" parameterClass="long" resultClass="SpringSprout"&#62
+		SELECT * FROM SPRINGSPROUT WHERE ID = #id#
+    &#60/select&#62
+    &#60insert id="insert" parameterClass="SpringSprout"&#62
+        INSERT INTO SPRINGSPROUT(NAME) VALUES(#name#);
+        &#60selectKey resultClass="long" keyProperty="id"&#62
+            CALL IDENTITY()
+        &#60/selectKey&#62
+    &#60/insert&#62
+    &#60update id="update" parameterClass="SpringSprout"&#62
+		UPDATE SPRINGSPROUT SET NAME = #name# WHERE ID = #id# 
+    &#60/update&#62
+    
+&#60/sqlMap&#62
+</pre>
 				
 				<h4>applicationContext.xml</h4>
-				<pre class="prettyprint">
-					&#60?xml version="1.0" encoding="UTF-8"?&#62
-					&#60beans xmlns="http://www.springframework.org/schema/beans"
-						xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-						xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-						xmlns:tx="http://www.springframework.org/schema/tx"
-						xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
-							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-							http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-							http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd"&#62
-						
-						&#60jdbc:embedded-database id="dataSource" type="H2"&#62
-					    	&#60jdbc:script location="classpath:sqlScript/schema.sql"/&#62
-					    &#60/jdbc:embedded-database&#62
-					    
-					    &#60bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"&#62
-					        &#60property name="dataSource" ref="dataSource" /&#62
-					        &#60property name="configLocation" value="classpath:ibatis/sqlMapConfig.xml" /&#62
-					        &#60property name="mappingLocations" value="classpath:ibatis/sqlmap/*.xml" /&#62
-					    &#60/bean&#62
-					    
-					    &#60ibatis:repositories base-package="egov.data.ibatis.sample.repository"/&#62
-						
-					&#60/beans&#60		
-				</pre>
+<pre class="prettyprint">
+&#60?xml version="1.0" encoding="UTF-8"?&#62
+&#60beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd"&#62
+	
+	&#60jdbc:embedded-database id="dataSource" type="H2"&#62
+    	&#60jdbc:script location="classpath:sqlScript/schema.sql"/&#62
+    &#60/jdbc:embedded-database&#62
+    
+    &#60bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"&#62
+        &#60property name="dataSource" ref="dataSource" /&#62
+        &#60property name="configLocation" value="classpath:ibatis/sqlMapConfig.xml" /&#62
+        &#60property name="mappingLocations" value="classpath:ibatis/sqlmap/*.xml" /&#62
+    &#60/bean&#62
+    
+    &#60ibatis:repositories base-package="egov.data.ibatis.sample.repository"/&#62
+	
+&#60/beans&#60
+</pre>
 				
 				<h4>Test</h4>
-				<pre class="prettyprint">
-					@RunWith(SpringJUnit4ClassRunner.class)
-					@ContextConfiguration
-					public class SpringSproutRepositoryTest {
-					
-						@Autowired SpringSproutRepository repository;
+<pre class="prettyprint">
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+public class SpringSproutRepositoryTest {
+
+	@Autowired SpringSproutRepository repository;
+
+	SpringSprout first, second, third;
 	
-						SpringSprout first, second, third;
-						
-						@Before
-						public void setup() {
-							first = new SpringSprout("miracle");
-							second = new SpringSprout("daclouds");
-							third = new SpringSprout("yunseok");
-						}
-						
-						@Test
-						public void testInsert() {
-							int before = count();
-							
-							repository.insert(first);
-							repository.insert(second);
-							repository.insert(third);
-							
-							assertThat(count(), is(before + 3));
-						}
-						
-						// ..기타 테스트 메소드
-					}
-				</pre>
+	@Before
+	public void setup() {
+		first = new SpringSprout("miracle");
+		second = new SpringSprout("daclouds");
+		third = new SpringSprout("yunseok");
+	}
+	
+	@Test
+	public void testInsert() {
+		int before = count();
+		
+		repository.insert(first);
+		repository.insert(second);
+		repository.insert(third);
+		
+		assertThat(count(), is(before + 3));
+	}
+	
+	// ..기타 테스트 메소드
+}
+</pre>
 				
 			</section>
 		</div>
