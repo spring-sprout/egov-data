@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import java.util.List;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +32,17 @@ public class SpringSproutRepositoryTest {
 		first = new SpringSprout("miracle");
 		second = new SpringSprout("daclouds");
 		third = new SpringSprout("yunseok");
+	}
+	
+	@Test
+	public void testInsertMap() throws Exception {
+		int before = count();
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", "test");
+		repository.insertMap(map);
+		
+		assertThat(count(), is(before + 1));
 	}
 	
 	@Test

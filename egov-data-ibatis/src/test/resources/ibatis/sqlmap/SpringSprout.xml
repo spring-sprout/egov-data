@@ -25,6 +25,13 @@
         </selectKey>
     </insert>
     
+    <insert id="insertMap" parameterClass="map">
+        INSERT INTO SPRINGSPROUT(NAME) VALUES(#name#);
+        <selectKey resultClass="long" keyProperty="id">
+            CALL IDENTITY()
+        </selectKey>
+    </insert>
+    
     <update id="update" parameterClass="SpringSprout">
 		UPDATE SPRINGSPROUT SET NAME = #name# WHERE ID = #id# 
     </update>

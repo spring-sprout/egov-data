@@ -53,9 +53,9 @@ public class SqlMapRepositoryConfigDefinitionParser extends
 		*/		
 	}
 	
-	@Override
-	protected void registerBeansForRoot(BeanDefinitionRegistry registry, Object source) {
-		super.registerBeansForRoot(registry, source);
-	}
+//	@Override
+//	protected void registerBeansForRoot(BeanDefinitionRegistry registry, Object source) {
+//		super.registerBeansForRoot(registry, source);
+//	}
 
 }

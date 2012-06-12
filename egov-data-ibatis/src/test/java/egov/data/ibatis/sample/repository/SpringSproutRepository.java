@@ -1,6 +1,6 @@
 package egov.data.ibatis.sample.repository;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,8 @@ public interface SpringSproutRepository extends SqlMapRepository<SpringSprout, L
 	public SpringSprout findByName(String name);
 	
 	public SpringSprout insert(SpringSprout springSprout);
+	
+	public void insertMap(Map<String, String> map);
 	
 	public int update(SpringSprout springSprout);
 	
