@@ -58,7 +58,8 @@ public class SqlMapQuery implements RepositoryQuery {
 	            return template.queryForList(queryMethod.getNamedQueryName(), parameterObject);
 	        }
 		} else if(StatementType.INSERT.equals(statementType)) {
-			return template.insert(queryMethod.getNamedQueryName(), parameterObject);
+			template.insert(queryMethod.getNamedQueryName(), parameterObject);
+			return parameterObject;
 		} else if(StatementType.UPDATE.equals(statementType)) {
 			return template.update(queryMethod.getNamedQueryName(), parameterObject);
 		} else if(StatementType.DELETE.equals(statementType)) {
