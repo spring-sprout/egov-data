@@ -1,4 +1,4 @@
-package egov.data.ibatis.sample.repository;
+package egov.data.ibatis.sample.namespace;
 
 import java.util.*;
 
@@ -6,12 +6,15 @@ import org.springframework.test.annotation.*;
 import org.springframework.transaction.annotation.*;
 
 import egov.data.ibatis.repository.*;
+import egov.data.ibatis.repository.annotation.*;
 import egov.data.ibatis.sample.domain.*;
 
 /**
  * @author Yongkwon Park
+ * @author Yunseok Choi
  */
-public interface SpringSproutRepository extends SqlMapRepository<SpringSprout, Long> {
+@Namespace("NamespaceStrategy")
+public interface NamespaceStrategyRepository extends SqlMapRepository<SpringSprout, Long> {
 	
 	public List<SpringSprout> findAll();
 	

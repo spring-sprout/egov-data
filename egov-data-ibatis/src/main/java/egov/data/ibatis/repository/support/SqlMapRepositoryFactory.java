@@ -15,32 +15,24 @@
  */
 package egov.data.ibatis.repository.support;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.io.*;
+import java.lang.reflect.*;
 
-import org.springframework.data.repository.core.EntityInformation;
-import org.springframework.data.repository.core.NamedQueries;
-import org.springframework.data.repository.core.RepositoryMetadata;
-import org.springframework.data.repository.core.support.RepositoryFactorySupport;
-import org.springframework.data.repository.query.QueryLookupStrategy;
-import org.springframework.data.repository.query.QueryMethod;
-import org.springframework.data.repository.query.RepositoryQuery;
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
-import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.data.repository.core.*;
+import org.springframework.data.repository.core.support.*;
+import org.springframework.data.repository.query.*;
+import org.springframework.orm.ibatis.*;
+import org.springframework.util.*;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ibatis.sqlmap.engine.impl.ExtendedSqlMapClient;
-import com.ibatis.sqlmap.engine.impl.SqlMapClientImpl;
-import com.ibatis.sqlmap.engine.impl.SqlMapExecutorDelegate;
+import com.ibatis.sqlmap.client.*;
+import com.ibatis.sqlmap.engine.impl.*;
 
-import egov.data.ibatis.repository.SimpleSqlMapRepository;
-import egov.data.ibatis.repository.SqlMapRepository;
-import egov.data.ibatis.repository.query.SqlMapQuery;
+import egov.data.ibatis.repository.*;
+import egov.data.ibatis.repository.query.*;
 
 /**
  * @author Yongkwon Park
+ * @author Yunseok Choi
  */
 @SuppressWarnings("deprecation")
 public class SqlMapRepositoryFactory extends RepositoryFactorySupport {
@@ -118,7 +110,7 @@ public class SqlMapRepositoryFactory extends RepositoryFactorySupport {
 
 		@Override
 		public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, NamedQueries namedQueries) {
-			return new SqlMapQuery(new QueryMethod(method, metadata), delegate, template);
+			return new SqlMapQuery(new SqlMapQueryMethod(method, metadata), delegate, template);
 		}
 		
 	}
