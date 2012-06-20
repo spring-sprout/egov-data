@@ -25,18 +25,23 @@ import com.ibatis.sqlmap.engine.impl.SqlMapExecutorDelegate;
 import com.ibatis.sqlmap.engine.mapping.statement.MappedStatement;
 import com.ibatis.sqlmap.engine.mapping.statement.StatementType;
 
+import egov.data.ibatis.repository.annotation.*;
+
 /**
- * iBatis statement를 호출하는 {@link RepositoryQuery} 구현체
+ * iBatis statement를 호출하는 {@link RepositoryQuery} 추상 클래스로
+ * 기본 전략을 구현하는 {@link DefaultSqlMapQuery}와 {@link Statement}를 처리하는
+ * {@link AnnotationBasedSqlMapQuery}가 있다.
  * 
  * @author Yongkwon Park
+ * @author Yunseok Choi
  */
-public class SqlMapQuery implements RepositoryQuery {
+public abstract class AbstractSqlMapQuery implements RepositoryQuery {
 	
-	private final QueryMethod queryMethod;
-	private final SqlMapClientTemplate template;
-	private final StatementType statementType;
+	protected final QueryMethod queryMethod;
+	protected final SqlMapClientTemplate template;
+	protected final StatementType statementType;
 	
-	public SqlMapQuery(QueryMethod queryMethod, SqlMapExecutorDelegate delegate, SqlMapClientTemplate sqlMapClientTemplate) {
+	public AbstractSqlMapQuery(QueryMethod queryMethod, SqlMapExecutorDelegate delegate, SqlMapClientTemplate sqlMapClientTemplate) {
 		this.queryMethod = queryMethod;
 		this.template = sqlMapClientTemplate;
 		
@@ -45,31 +50,7 @@ public class SqlMapQuery implements RepositoryQuery {
 		this.statementType = statement.getStatementType();
 	}
 
-	@Override
-	public Object execute(Object[] parameters) {
-		
-		Object parameterObject = parametersParsing(parameters);
-		
-		if(StatementType.SELECT.equals(statementType)) {
-			if(QueryMethod.Type.SINGLE_ENTITY.equals(queryMethod.getType())) {
-	            return template.queryForObject(queryMethod.getNamedQueryName(), parameterObject);
-	        }
-	        else if(QueryMethod.Type.COLLECTION.equals(queryMethod.getType())) {
-	            return template.queryForList(queryMethod.getNamedQueryName(), parameterObject);
-	        }
-		} else if(StatementType.INSERT.equals(statementType)) {
-			template.insert(queryMethod.getNamedQueryName(), parameterObject);
-			return parameterObject;
-		} else if(StatementType.UPDATE.equals(statementType)) {
-			return template.update(queryMethod.getNamedQueryName(), parameterObject);
-		} else if(StatementType.DELETE.equals(statementType)) {
-			return template.delete(queryMethod.getNamedQueryName(), parameterObject);
-		}
-		
-		throw new UnsupportedOperationException();
-	}
-	
-	private Object parametersParsing(Object[] parameters) {
+	protected Object parametersParsing(Object[] parameters) {
 		if(isEmpty(parameters)) {
 			return null;
 		} else if(isSingelParameters(parameters)) {

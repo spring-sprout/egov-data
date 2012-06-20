@@ -15,38 +15,28 @@
  */
 package egov.data.ibatis.repository.query;
 
-import java.lang.reflect.*;
-
-import org.springframework.data.repository.core.*;
 import org.springframework.data.repository.query.*;
+import org.springframework.orm.ibatis.*;
+
+import com.ibatis.sqlmap.engine.impl.*;
 
 import egov.data.ibatis.repository.annotation.*;
 
 /**
- * Repository 인터페이스에 있는 @Namespace 처리 전략 클래스
+ * {@link AbstractSqlMapQuery}를 구현해 {@link Statement}를 처리
  * 
  * @author Yunseok Choi
  *
  */
-public class SqlMapQueryMethod extends QueryMethod {
-	
-	private Class<?> repositoryInterface;
-	private String methodName;
-	
-	public SqlMapQueryMethod(Method method, RepositoryMetadata metadata) {
-		super(method, metadata);
-		this.repositoryInterface = metadata.getRepositoryInterface();
-		this.methodName = method.getName();
+public class AnnotationBasedSqlMapQuery extends AbstractSqlMapQuery {
+
+	public AnnotationBasedSqlMapQuery(QueryMethod queryMethod, SqlMapExecutorDelegate delegate, SqlMapClientTemplate sqlMapClientTemplate) {
+		super(queryMethod, delegate, sqlMapClientTemplate);
 	}
-	
+
 	@Override
-	public String getNamedQueryName() {
-		if (repositoryInterface.isAnnotationPresent(Namespace.class)) {
-			Namespace namespace = repositoryInterface.getAnnotation(Namespace.class);
-			return String.format("%s.%s", namespace.value(), methodName);
-		} else {
-			return super.getNamedQueryName();
-		}
+	public Object execute(Object[] parameters) {
+		throw new UnsupportedOperationException();
 	}
 
 }

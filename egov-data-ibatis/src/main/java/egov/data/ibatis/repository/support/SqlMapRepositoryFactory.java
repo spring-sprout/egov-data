@@ -28,6 +28,7 @@ import com.ibatis.sqlmap.client.*;
 import com.ibatis.sqlmap.engine.impl.*;
 
 import egov.data.ibatis.repository.*;
+import egov.data.ibatis.repository.annotation.*;
 import egov.data.ibatis.repository.query.*;
 
 /**
@@ -107,10 +108,27 @@ public class SqlMapRepositoryFactory extends RepositoryFactorySupport {
 			this.delegate = delegate;
 			this.template = sqlMapClientTemplate;
 		}
-
+		
 		@Override
 		public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, NamedQueries namedQueries) {
-			return new SqlMapQuery(new SqlMapQueryMethod(method, metadata), delegate, template);
+			Class<?> repositoryInterface = metadata.getRepositoryInterface();
+			
+			// TODO: 이런식으로 구현하면 if-else 케이스가 많아지니까.. 전략 사용하도록 변경하는게 좋을듯.
+			QueryMethod queryMethod = null;
+			if (repositoryInterface.isAnnotationPresent(Namespace.class)) {
+				queryMethod = new AnnotationBasedSqlMapQueryMethod(method, metadata);
+			} else {
+				queryMethod = new QueryMethod(method, metadata);
+			}
+			
+			RepositoryQuery repositoryQuery = null;
+			if (method.isAnnotationPresent(Statement.class)) {
+				repositoryQuery = new AnnotationBasedSqlMapQuery(queryMethod, delegate, template);
+			} else {
+				repositoryQuery = new DefaultSqlMapQuery(queryMethod, delegate, template);
+			}
+			
+			return repositoryQuery;
 		}
 		
 	}
