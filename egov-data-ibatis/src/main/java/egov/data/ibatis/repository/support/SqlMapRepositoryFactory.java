@@ -113,22 +113,20 @@ public class SqlMapRepositoryFactory extends RepositoryFactorySupport {
 		public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, NamedQueries namedQueries) {
 			Class<?> repositoryInterface = metadata.getRepositoryInterface();
 			
-			// TODO: 이런식으로 구현하면 if-else 케이스가 많아지니까.. 전략 사용하도록 변경하는게 좋을듯.
 			QueryMethod queryMethod = null;
-			if (repositoryInterface.isAnnotationPresent(Namespace.class)) {
+			queryMethod = chooseQueryMethodStrategy(method, metadata, repositoryInterface);
+			
+			return new SqlMapQuery(queryMethod, delegate, template);
+		}
+
+		private QueryMethod chooseQueryMethodStrategy(Method method, RepositoryMetadata metadata, Class<?> repositoryInterface) {
+			QueryMethod queryMethod;
+			if (repositoryInterface.isAnnotationPresent(Namespace.class) || method.isAnnotationPresent(Statement.class)) {
 				queryMethod = new AnnotationBasedSqlMapQueryMethod(method, metadata);
 			} else {
 				queryMethod = new QueryMethod(method, metadata);
 			}
-			
-			RepositoryQuery repositoryQuery = null;
-			if (method.isAnnotationPresent(Statement.class)) {
-				repositoryQuery = new AnnotationBasedSqlMapQuery(queryMethod, delegate, template);
-			} else {
-				repositoryQuery = new DefaultSqlMapQuery(queryMethod, delegate, template);
-			}
-			
-			return repositoryQuery;
+			return queryMethod;
 		}
 		
 	}

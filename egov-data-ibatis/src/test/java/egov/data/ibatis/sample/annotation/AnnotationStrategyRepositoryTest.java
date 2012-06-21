@@ -1,4 +1,4 @@
-package egov.data.ibatis.sample.namespace;
+package egov.data.ibatis.sample.annotation;
 
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
@@ -20,10 +20,10 @@ import egov.data.ibatis.sample.domain.SpringSprout;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @Transactional
-public class NamespaceStrategyRepositoryTest {
+public class AnnotationStrategyRepositoryTest {
 	
 	@Autowired JdbcTemplate jdbcTemplate;
-	@Autowired NamespaceStrategyRepository repository;
+	@Autowired AnnotationStrategyRepository repository;
 	
 	SpringSprout first, second, third;
 	
@@ -40,7 +40,7 @@ public class NamespaceStrategyRepositoryTest {
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("name", "test");
-		repository.insertMap(map);
+		repository.saveMap(map);
 		
 		assertThat(count(), is(before + 1));
 	}
@@ -56,9 +56,9 @@ public class NamespaceStrategyRepositoryTest {
 	
 	@Test
 	public void testIdInjected() throws Exception {
-		repository.insert(first);
-		repository.insert(second);
-		repository.insert(third);
+		repository.save(first);
+		repository.save(second);
+		repository.save(third);
 		
 		checkIdInjected();
 	}
@@ -67,7 +67,7 @@ public class NamespaceStrategyRepositoryTest {
 	public void testFindByName() {
 		registerTestSpringSprouts();
 		
-		SpringSprout springSprout = repository.findByName(first.getName());
+		SpringSprout springSprout = repository.selectByName(first.getName());
 		
 		assertThat(springSprout, is(first));
 	}
@@ -76,7 +76,7 @@ public class NamespaceStrategyRepositoryTest {
 	public void testFindAll() {
 		registerTestSpringSprouts();
 		
-		List<SpringSprout> springSprouts = repository.findAll();
+		List<SpringSprout> springSprouts = repository.selectAll();
 		
 		assertThat(springSprouts, is(hasItems(first, second, third)));
 	}
@@ -85,11 +85,11 @@ public class NamespaceStrategyRepositoryTest {
 	public void testUpdate() {
 		registerTestSpringSprouts();
 		
-		SpringSprout miracle = repository.findByName(first.getName());
+		SpringSprout miracle = repository.selectByName(first.getName());
 		miracle.setName("update");
 		
-		int updateCount = repository.update(miracle);
-		SpringSprout update = repository.findByName(miracle.getName());
+		int updateCount = repository.newOne(miracle);
+		SpringSprout update = repository.selectByName(miracle.getName());
 		
 		assertThat(updateCount, is(1));
 		assertThat(update, is(miracle));
@@ -101,8 +101,8 @@ public class NamespaceStrategyRepositoryTest {
 		
 		int before = count();
 		
-		SpringSprout miracle = repository.findByName(first.getName());
-		int deleteCount = repository.delete(miracle.getId());
+		SpringSprout miracle = repository.selectByName(first.getName());
+		int deleteCount = repository.remove(miracle.getId());
 		
 		assertThat(deleteCount, is(1));
 		assertThat(count(), is(before - deleteCount));
@@ -114,9 +114,9 @@ public class NamespaceStrategyRepositoryTest {
 	}
 
 	void registerTestSpringSprouts() {
-		first = repository.insert(first);
-		second = repository.insert(second);
-		third = repository.insert(third);
+		first = repository.save(first);
+		second = repository.save(second);
+		third = repository.save(third);
 	}
 	
 	void checkIdInjected() {

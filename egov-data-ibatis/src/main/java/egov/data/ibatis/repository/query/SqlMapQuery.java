@@ -15,6 +15,8 @@
  */
 package egov.data.ibatis.repository.query;
 
+import java.util.*;
+
 import org.springframework.data.repository.query.*;
 import org.springframework.orm.ibatis.*;
 
@@ -22,15 +24,24 @@ import com.ibatis.sqlmap.engine.impl.*;
 import com.ibatis.sqlmap.engine.mapping.statement.*;
 
 /**
- * {@link AbstractsSqlMapQuery}를 상속한 기본 전략 구현체
+ * iBatis statement를 호출하는 {@link RepositoryQuery} 구현체
  * 
  * @author Yongkwon Park
  *
  */
-public class DefaultSqlMapQuery extends AbstractSqlMapQuery {
+public class SqlMapQuery implements RepositoryQuery {
+	
+	private final QueryMethod queryMethod;
+	private final SqlMapClientTemplate template;
+	private final StatementType statementType;
 
-	public DefaultSqlMapQuery(QueryMethod queryMethod, SqlMapExecutorDelegate delegate, SqlMapClientTemplate sqlMapClientTemplate) {
-		super(queryMethod, delegate, sqlMapClientTemplate);
+	public SqlMapQuery(QueryMethod queryMethod, SqlMapExecutorDelegate delegate, SqlMapClientTemplate sqlMapClientTemplate) {
+		this.queryMethod = queryMethod;
+		this.template = sqlMapClientTemplate;
+		
+		// iBatis에게 statement(query)의 유형(select, insert, update, delete) 얻기
+		MappedStatement statement = delegate.getMappedStatement(queryMethod.getNamedQueryName());
+		this.statementType = statement.getStatementType();
 	}
 	
 	@Override
@@ -55,6 +66,29 @@ public class DefaultSqlMapQuery extends AbstractSqlMapQuery {
 		}
 		
 		throw new UnsupportedOperationException();
+	}
+	
+	private Object parametersParsing(Object[] parameters) {
+		if(isEmpty(parameters)) {
+			return null;
+		} else if(isSingelParameters(parameters)) {
+			return parameters[0];
+		} else {
+			throw new IllegalArgumentException("parameter 가 너무 많습니다. [" + Arrays.toString(parameters) + "]");
+		}
+	}
+	
+	private boolean isEmpty(Object[] parameters) {
+        return parameters == null || parameters.length == 0 ? true : false; 
+    }
+    
+    private boolean isSingelParameters(Object[] parameters) {
+        return parameters != null && parameters.length == 1 ? true : false; 
+    }
+	
+	@Override
+	public QueryMethod getQueryMethod() {
+		return queryMethod;
 	}
 
 }

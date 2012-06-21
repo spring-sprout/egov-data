@@ -23,7 +23,7 @@ import org.springframework.data.repository.query.*;
 import egov.data.ibatis.repository.annotation.*;
 
 /**
- * Repository 인터페이스에 있는 @Namespace 처리 전략 클래스
+ * Repository 인터페이스에 있는 {@link Namespace} 및 쿼리메소드의 {@link Statement} 처리 전략 클래스
  * 
  * @author Yunseok Choi
  *
@@ -31,18 +31,31 @@ import egov.data.ibatis.repository.annotation.*;
 public class AnnotationBasedSqlMapQueryMethod extends QueryMethod {
 	
 	private Class<?> repositoryInterface;
-	private String methodName;
+	private Method method;
 	
 	public AnnotationBasedSqlMapQueryMethod(Method method, RepositoryMetadata metadata) {
 		super(method, metadata);
+		
 		this.repositoryInterface = metadata.getRepositoryInterface();
-		this.methodName = method.getName();
+		this.method = method;
 	}
 	
 	@Override
 	public String getNamedQueryName() {
-		Namespace namespace = repositoryInterface.getAnnotation(Namespace.class);
-		return String.format("%s.%s", namespace.value(), methodName);
+		if (repositoryInterface.isAnnotationPresent(Namespace.class)) {
+			Namespace namespace = repositoryInterface.getAnnotation(Namespace.class);
+			return String.format("%s.%s", namespace.value(), getName());
+		}
+		
+		return super.getNamedQueryName();
+	}
+	
+	@Override
+	public String getName() {
+		if (method.isAnnotationPresent(Statement.class))
+			return method.getAnnotation(Statement.class).value();
+		
+		return super.getName();
 	}
 
 }
