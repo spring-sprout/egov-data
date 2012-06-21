@@ -17,6 +17,12 @@ package egov.data.ibatis.repository.annotation;
 
 import java.lang.annotation.*;
 
+/**
+ * 쿼리메소드에서 기본 전략인 메소드 이름이 아닌 다른 statement id와 매핑하려고 할 때 사용. 
+ * 
+ * @author Yunseok Choi
+ *
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Statement {
