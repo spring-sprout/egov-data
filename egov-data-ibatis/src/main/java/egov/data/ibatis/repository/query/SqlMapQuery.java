@@ -49,19 +49,18 @@ public class SqlMapQuery implements RepositoryQuery {
 		
 		Object parameterObject = parametersParsing(parameters);
 		
-		if(StatementType.SELECT.equals(statementType)) {
-			if(QueryMethod.Type.SINGLE_ENTITY.equals(queryMethod.getType())) {
+		if (StatementType.SELECT.equals(statementType)) {
+			if (QueryMethod.Type.SINGLE_ENTITY.equals(queryMethod.getType())) {
 	            return template.queryForObject(queryMethod.getNamedQueryName(), parameterObject);
-	        }
-	        else if(QueryMethod.Type.COLLECTION.equals(queryMethod.getType())) {
+	        } else if (QueryMethod.Type.COLLECTION.equals(queryMethod.getType())) {
 	            return template.queryForList(queryMethod.getNamedQueryName(), parameterObject);
 	        }
-		} else if(StatementType.INSERT.equals(statementType)) {
+		} else if (StatementType.INSERT.equals(statementType)) {
 			template.insert(queryMethod.getNamedQueryName(), parameterObject);
 			return parameterObject;
-		} else if(StatementType.UPDATE.equals(statementType)) {
+		} else if (StatementType.UPDATE.equals(statementType)) {
 			return template.update(queryMethod.getNamedQueryName(), parameterObject);
-		} else if(StatementType.DELETE.equals(statementType)) {
+		} else if (StatementType.DELETE.equals(statementType)) {
 			return template.delete(queryMethod.getNamedQueryName(), parameterObject);
 		}
 		
@@ -69,15 +68,34 @@ public class SqlMapQuery implements RepositoryQuery {
 	}
 	
 	private Object parametersParsing(Object[] parameters) {
-		if(isEmpty(parameters)) {
+//		if (getQueryMethod().getName().equals("insertVars")) {
+//			Parameters params = getQueryMethod().getParameters();
+//			for (int i = 0; i < params.getNumberOfParameters(); i++) {
+//				System.out.println(params.getBindableParameter(i).getName()); // null
+//			}
+//		}
+		
+		if (isEmpty(parameters)) {
 			return null;
-		} else if(isSingelParameters(parameters)) {
+		} else if (isSingelParameters(parameters)) {
 			return parameters[0];
+		} else if (hasParamAnnotation()) {
+			String[] parameterNames = getParameterNames();
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			for (int i = 0; i < parameters.length; i++)
+				map.put(parameterNames[i], parameters[i]);
+			
+			return map;
 		} else {
 			throw new IllegalArgumentException("parameter 가 너무 많습니다. [" + Arrays.toString(parameters) + "]");
 		}
 	}
-	
+
+	private String[] getParameterNames() {
+		return ((AnnotationBasedSqlMapQueryMethod) getQueryMethod()).getParameterNames();
+	}
+
 	private boolean isEmpty(Object[] parameters) {
         return parameters == null || parameters.length == 0 ? true : false; 
     }
@@ -86,7 +104,11 @@ public class SqlMapQuery implements RepositoryQuery {
         return parameters != null && parameters.length == 1 ? true : false; 
     }
 	
-	@Override
+    private boolean hasParamAnnotation() {
+    	return getQueryMethod().getClass().isAssignableFrom(AnnotationBasedSqlMapQueryMethod.class);
+    }
+
+    @Override
 	public QueryMethod getQueryMethod() {
 		return queryMethod;
 	}

@@ -35,6 +35,15 @@ public class AnnotationStrategyRepositoryTest {
 	}
 	
 	@Test
+	public void testInsert() {
+		int before = count();
+		
+		registerTestSpringSprouts();
+		
+		assertThat(count(), is(before + 3));
+	}
+	
+	@Test
 	public void testInsertMap() throws Exception {
 		int before = count();
 		
@@ -46,12 +55,12 @@ public class AnnotationStrategyRepositoryTest {
 	}
 	
 	@Test
-	public void testInsert() {
+	public void testInsertVars() throws Exception {
 		int before = count();
 		
-		registerTestSpringSprouts();
+		repository.saveVars("mOer", 28);
 		
-		assertThat(count(), is(before + 3));
+		assertThat(count(), is(before + 1));
 	}
 	
 	@Test
@@ -107,7 +116,6 @@ public class AnnotationStrategyRepositoryTest {
 		assertThat(deleteCount, is(1));
 		assertThat(count(), is(before - deleteCount));
 	}
-	
 	
 	int count() {
 		return jdbcTemplate.queryForInt("SELECT count(ID) FROM SPRINGSPROUT");

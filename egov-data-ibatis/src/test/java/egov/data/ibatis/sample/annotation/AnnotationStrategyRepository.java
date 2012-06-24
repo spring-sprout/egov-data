@@ -28,6 +28,9 @@ public interface AnnotationStrategyRepository extends SqlMapRepository<SpringSpr
 	@Statement("insertMap")
 	public void saveMap(Map<String, String> map);
 	
+	@Statement("insertVars")
+	public void saveVars(@Param("name") String name, @Param("age") Integer age);
+
 	@Statement("update")
 	public int newOne(SpringSprout springSprout);
 	
