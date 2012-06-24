@@ -22,7 +22,6 @@ import org.springframework.data.repository.core.*;
 import org.springframework.data.repository.query.*;
 
 import egov.data.ibatis.repository.annotation.*;
-import egov.data.ibatis.repository.annotation.Param;
 
 /**
  * Repository 인터페이스에 있는 {@link Namespace} 및 쿼리메소드의 {@link Statement} 처리 전략 클래스

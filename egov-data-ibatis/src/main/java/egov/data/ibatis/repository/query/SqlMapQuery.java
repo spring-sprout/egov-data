@@ -72,6 +72,8 @@ public class SqlMapQuery implements RepositoryQuery {
 //			Parameters params = getQueryMethod().getParameters();
 //			for (int i = 0; i < params.getNumberOfParameters(); i++) {
 //				System.out.println(params.getBindableParameter(i).getName()); // null
+//				Parameter param = params.getParameter(i);
+//				System.out.println(param.getName());
 //			}
 //		}
 		
@@ -80,20 +82,16 @@ public class SqlMapQuery implements RepositoryQuery {
 		} else if (isSingelParameters(parameters)) {
 			return parameters[0];
 		} else if (hasParamAnnotation()) {
-			String[] parameterNames = getParameterNames();
-			
 			Map<String, Object> map = new HashMap<String, Object>();
-			for (int i = 0; i < parameters.length; i++)
-				map.put(parameterNames[i], parameters[i]);
+			Parameters params = getQueryMethod().getParameters();
+			
+			for (int i = 0; i < params.getNumberOfParameters(); i++)
+				map.put(params.getParameter(i).getName(), parameters[i]);
 			
 			return map;
 		} else {
 			throw new IllegalArgumentException("parameter 가 너무 많습니다. [" + Arrays.toString(parameters) + "]");
 		}
-	}
-
-	private String[] getParameterNames() {
-		return ((AnnotationBasedSqlMapQueryMethod) getQueryMethod()).getParameterNames();
 	}
 
 	private boolean isEmpty(Object[] parameters) {

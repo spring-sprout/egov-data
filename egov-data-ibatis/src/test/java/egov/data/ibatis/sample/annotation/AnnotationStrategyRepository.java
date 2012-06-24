@@ -2,6 +2,7 @@ package egov.data.ibatis.sample.annotation;
 
 import java.util.*;
 
+import org.springframework.data.repository.query.*;
 import org.springframework.test.annotation.*;
 import org.springframework.transaction.annotation.*;
 
