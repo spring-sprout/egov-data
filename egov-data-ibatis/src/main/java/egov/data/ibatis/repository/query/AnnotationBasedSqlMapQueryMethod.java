@@ -15,7 +15,6 @@
  */
 package egov.data.ibatis.repository.query;
 
-import java.lang.annotation.*;
 import java.lang.reflect.*;
 
 import org.springframework.data.repository.core.*;
@@ -33,7 +32,6 @@ public class AnnotationBasedSqlMapQueryMethod extends QueryMethod {
 	
 	private Class<?> repositoryInterface;
 	private Method method;
-	private String[] parameterNames;
 	
 	public AnnotationBasedSqlMapQueryMethod(Method method, RepositoryMetadata metadata) {
 		super(method, metadata);
@@ -58,24 +56,6 @@ public class AnnotationBasedSqlMapQueryMethod extends QueryMethod {
 			return method.getAnnotation(Statement.class).value();
 		
 		return super.getName();
-	}
-	
-	public String[] getParameterNames() {
-		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-		parameterNames = new String[parameterAnnotations.length];
-		
-		for (int i = 0; i < parameterAnnotations.length; i++) {
-			Annotation[] annotations = parameterAnnotations[i];
-			for (int j = 0; j < annotations.length; j++) {
-				Annotation annotation = annotations[j];
-				if (annotation.annotationType().isAssignableFrom(Param.class)) {
-					Param param = (Param) annotation;
-					parameterNames[i] = param.value();
-				}
-			}
-		}
-		
-		return parameterNames;
 	}
 
 }
