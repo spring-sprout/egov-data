@@ -16,6 +16,7 @@
 package egov.data.ibatis.repository.support;
 
 import java.io.*;
+import java.lang.annotation.*;
 import java.lang.reflect.*;
 
 import org.springframework.data.repository.core.*;
@@ -121,12 +122,23 @@ public class SqlMapRepositoryFactory extends RepositoryFactorySupport {
 
 		private QueryMethod chooseQueryMethodStrategy(Method method, RepositoryMetadata metadata, Class<?> repositoryInterface) {
 			QueryMethod queryMethod;
-			if (repositoryInterface.isAnnotationPresent(Namespace.class) || method.isAnnotationPresent(Statement.class)) {
-				queryMethod = new AnnotationBasedSqlMapQueryMethod(method, metadata);
+			boolean paramAnnotation = false;
+			if ((paramAnnotation = hasParamAnnotation(method)) || repositoryInterface.isAnnotationPresent(Namespace.class) || method.isAnnotationPresent(Statement.class)) {
+				queryMethod = new AnnotationBasedSqlMapQueryMethod(method, metadata, paramAnnotation);
 			} else {
 				queryMethod = new QueryMethod(method, metadata);
 			}
 			return queryMethod;
+		}
+		
+		private boolean hasParamAnnotation(Method method) {
+			Annotation[][] paramAnnotationArrays = method.getParameterAnnotations();
+			for (Annotation[] paramAnnotations : paramAnnotationArrays)
+				for (Annotation paramAnnotation : paramAnnotations)
+					if (paramAnnotation.annotationType().isAssignableFrom(Param.class))
+						return true;
+			
+			return false;
 		}
 		
 	}

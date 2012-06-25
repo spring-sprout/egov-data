@@ -27,6 +27,7 @@ import com.ibatis.sqlmap.engine.mapping.statement.*;
  * iBatis statement를 호출하는 {@link RepositoryQuery} 구현체
  * 
  * @author Yongkwon Park
+ * @author Yunseok Choi
  *
  */
 public class SqlMapQuery implements RepositoryQuery {
@@ -68,29 +69,15 @@ public class SqlMapQuery implements RepositoryQuery {
 	}
 	
 	private Object parametersParsing(Object[] parameters) {
-//		if (getQueryMethod().getName().equals("insertVars")) {
-//			Parameters params = getQueryMethod().getParameters();
-//			for (int i = 0; i < params.getNumberOfParameters(); i++) {
-//				System.out.println(params.getBindableParameter(i).getName()); // null
-//				Parameter param = params.getParameter(i);
-//				System.out.println(param.getName());
-//			}
-//		}
-		
 		if (isEmpty(parameters)) {
 			return null;
 		} else if (isSingelParameters(parameters)) {
 			return parameters[0];
 		} else if (hasParamAnnotation()) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			Parameters params = getQueryMethod().getParameters();
-			
-			for (int i = 0; i < params.getNumberOfParameters(); i++)
-				map.put(params.getParameter(i).getName(), parameters[i]);
-			
-			return map;
+			return populateToMap(parameters);
 		} else {
-			throw new IllegalArgumentException("parameter 가 너무 많습니다. [" + Arrays.toString(parameters) + "]");
+			// 만약 사용자가 커스텀 구현체를 만든다고 한다면 예외 발생시키는게 올바른 일인가?
+			throw new IllegalArgumentException("parameter 는 기본형 다수나 하나의 Map 또는 Domain 객체만 사용할 수 있습니다. [" + Arrays.toString(parameters) + "]");
 		}
 	}
 
@@ -103,8 +90,18 @@ public class SqlMapQuery implements RepositoryQuery {
     }
 	
     private boolean hasParamAnnotation() {
-    	return getQueryMethod().getClass().isAssignableFrom(AnnotationBasedSqlMapQueryMethod.class);
+    	return getQueryMethod().getClass().isAssignableFrom(AnnotationBasedSqlMapQueryMethod.class) && ((AnnotationBasedSqlMapQueryMethod) getQueryMethod()).hasParamAnnotation();
     }
+    
+    private Map<String, Object> populateToMap(Object[] parameters) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Parameters params = getQueryMethod().getParameters();
+		
+		for (int i = 0; i < params.getNumberOfParameters(); i++)
+			map.put(params.getParameter(i).getName(), parameters[i]);
+		
+		return map;
+	}
 
     @Override
 	public QueryMethod getQueryMethod() {

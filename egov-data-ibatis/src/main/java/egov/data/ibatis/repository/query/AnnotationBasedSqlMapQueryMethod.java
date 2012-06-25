@@ -31,12 +31,14 @@ import egov.data.ibatis.repository.annotation.*;
 public class AnnotationBasedSqlMapQueryMethod extends QueryMethod {
 	
 	private Class<?> repositoryInterface;
+	private boolean paramAnnotation;
 	private Method method;
 	
-	public AnnotationBasedSqlMapQueryMethod(Method method, RepositoryMetadata metadata) {
+	public AnnotationBasedSqlMapQueryMethod(Method method, RepositoryMetadata metadata, boolean paramAnnotation) {
 		super(method, metadata);
 		
 		this.repositoryInterface = metadata.getRepositoryInterface();
+		this.paramAnnotation = paramAnnotation;
 		this.method = method;
 	}
 	
@@ -56,6 +58,10 @@ public class AnnotationBasedSqlMapQueryMethod extends QueryMethod {
 			return method.getAnnotation(Statement.class).value();
 		
 		return super.getName();
+	}
+
+	public boolean hasParamAnnotation() {
+		return paramAnnotation;
 	}
 
 }
