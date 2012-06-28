@@ -44,7 +44,7 @@
 
 <h4>eGov Data iBatis</h4>
 
-<pre class="prettyprint"><code class="lang-java">public class BookRepository extends SqlMapRepository&#60;Book, Integer&#62; {
+<pre class="prettyprint"><code class="lang-java">public interface BookRepository extends SqlMapRepository&#60;Book, Integer&#62; {
 
   Book getById(Integer id);
   
@@ -84,7 +84,7 @@ public class DefaultBookService implements BookService {
 
 <h4>eGov Data Hibernate</h4>
 
-<pre class="prettyprint"><code class="lang-java">public class BookRepository extends HibernateRepository&#60;Book, Integer&#62; {
+<pre class="prettyprint"><code class="lang-java">public interface BookRepository extends HibernateRepository&#60;Book, Integer&#62; {
 
 
 }
