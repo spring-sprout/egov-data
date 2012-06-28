@@ -32,7 +32,7 @@
 			<section id="main_content" class="inner">
 				<h3>eGov-Data-iBatis Quick Start</h3>
 				
-				<p>이 가이드는 eGov-Data-iBatis 1.0.0 버전을 기준으로 작성되었습니다.</p>
+				<p>이 가이드는 eGov-Data-iBatis 1.0.0.M1 버전을 기준으로 작성되었습니다.</p>
 				
 				<h4>Setup</h4>
 				<ol>
@@ -78,10 +78,25 @@ public interface SpringSproutRepository extends SqlMapRepository&#60SpringSprout
 	// ..기타 다른 메소드
 }
 </pre>
-				<p>SqlMapRepository 인터페이스를 확장해 SqlMap에 선언한 구문과 같은 의미를 지니도록 메소드를 정의하면, 실제 구현체를 만들 필요없이 바로 SqlMap 구문을 호출 가능합니다. 이때, 제네릭 타입으로 지정한 도메인 클래스의 이름이 SqlMap의 네임스페이스가 되고 메소드 이름은 각 구문의 id가 됩니다. 이것은 기본 전략으로 다른 매핑 전략을 제공할 예정입니다. 따라서 위의 Repository 인터페이스는 SpringSprout라는 네임스페이스를 가진 SqlMap과 연결됩니다.</p>
+				<p>SqlMapRepository 인터페이스를 확장해 SqlMap에 선언한 구문과 같은 의미를 지니도록 메소드를 정의하면, 실제 구현체를 만들 필요없이 바로 SqlMap 구문을 호출 가능합니다. 이때, 제네릭 타입으로 지정한 도메인 클래스의 이름이 SqlMap의 네임스페이스가 되고 메소드 이름은 각 구문의 id가 됩니다. 따라서 위의 Repository 인터페이스는 SpringSprout라는 네임스페이스를 가진 SqlMap과 연결됩니다.</p>
 				
-				<h5>Query Method</h5>
-				<p>Repository 인터페이스에 정의한 메소드를 쿼리메소드라고 부르며 이름과 같이 메소드가 하나의 쿼리 역할을 하게 됩니다. eGov-Data-iBatis에선 Spring Data의 쿼리메소드와 역할이 조금 다릅니다. 쿼리메소드 자체가 하나의 쿼리를 담당한다기 보단 쿼리메소드 이름과 같은 SqlMap 구문을 호출하는 즉, 매퍼 역할을 맡습니다. 이것은 쿼리메소드 기본 전략이며 차후 어노테이션 등을 통해 쿼리메소드 이름과 다른 SqlMap 구문과 매핑 가능하도록 지원할 예정입니다. 쿼리메소드 파라미터로 Java 기본 타입이나 Domain, Map과 같은 객체를 넘겨줄 수 있습니다. 아직은 하나의 타입만을 넘길 수 있지만, 여러 개의 파라미터도 곧 지원될 것입니다.</p>
+				<h4>Query method</h4>
+				<p>Spring Data에서 Repository 인터페이스에 정의한 메소드를 쿼리메소드라고 부르며 이름과 같이 메소드가 하나의 쿼리 역할을 하게 됩니다. eGov-Data-iBatis의 쿼리메소드는 Spring Data의 쿼리메소드와 역할이 조금 다릅니다. 쿼리메소드 자체가 하나의 쿼리를 담당한다기 보다는 쿼리메소드 이름과 같은 SqlMap 구문(statement)을 호출하는 즉, 매퍼 역할을 맡습니다. 쿼리메소드 파라미터로 여러개의 Java 기본 타입이나 하나의 Domain 또는 Map 객체를 넘길 수 있습니다. 만약 여러개의 Java 기본 타입을 사용할 경우 다음과 같이 @Param 어노테이션을 사용합니다.</p>
+<pre class="prettyprint">
+public void saveVars(@Param("name") String name, @Param("age") Integer age);
+</pre>
+				<h4>Query lookup strategy</h4>
+				<p>SqlMap 구문과 매핑하는 기본 전략은 제네릭 타입의 [도메인 클래스 이름].[쿼리메소드 이름] 이며 각각 SqlMap의 네임스페이스와 구문 id에 해당합니다만, 여러분의 목적에 따라 다른 전략을 사용하실 수 있습니다. eGov-Data-iBatis에서 제공하는 추가 전략은 앞의 [도메인 클래스 이름]과 [쿼리메소드 이름]을 각각 @Namespace, @Statement 어노테이션을 붙여 기호에 맞게 지정하는 것입니다.</p>
+<pre class="prettyprint">
+@Namespace("org.egovdata.")
+public interface SpringSproutRepository extends SqlMapRepository<SpringSprout, Long> {
+
+	@Statement("insert")
+	public SpringSprout save(SpringSprout springSprout);
+
+}
+</pre>
+				<p>따라서 위의 코드는 org.egovdata.insert SqlMap 구문을 호출하게 됩니다.</p>
 				
 				<h4>SqlMap.xml</h4>
 <pre class="prettyprint">
