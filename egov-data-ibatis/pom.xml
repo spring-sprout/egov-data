@@ -7,7 +7,7 @@
     <groupId>egov-data</groupId>
     <artifactId>egov-data-ibatis</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0.M1</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <java.version>1.6</java.version>
@@ -131,5 +131,14 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+    <distributionManagement>
+        <repository>
+            <id>springsprout-releases</id>
+            <url>http://dev.springsprout.org/nexus/content/repositories/springsprout-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>springsprout-snapshots</id>
+            <url>http://dev.springsprout.org/nexus/content/repositories/springsprout-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

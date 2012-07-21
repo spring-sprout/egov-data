@@ -4,7 +4,8 @@ test:
 	mvn test
 	cd egov-data-hibernate; \
 	mvn test
-
+	cd egov-data-hibernate-sample; \
+	mvn test
 .PHONY: deploy
 deploy:
 	cd egov-data-hibernate; \

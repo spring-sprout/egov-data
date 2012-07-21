@@ -103,5 +103,14 @@
             <version>1.6.4</version>
         </dependency>
     </dependencies>
-
+    <distributionManagement>
+        <repository>
+            <id>springsprout-releases</id>
+            <url>http://dev.springsprout.org/nexus/content/repositories/springsprout-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>springsprout-snapshots</id>
+            <url>http://dev.springsprout.org/nexus/content/repositories/springsprout-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

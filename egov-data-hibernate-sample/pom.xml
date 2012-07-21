@@ -81,5 +81,17 @@
             <version>${spring.version}</version>
         </dependency>
     </dependencies>
-
+    <repositories>
+        <repository>
+            <id>springsprout-releases</id>
+            <url>http://dev.springsprout.org/nexus/content/repositories/springsprout-releases</url>
+        </repository>
+        <repository>
+            <id>springsprout-snapshots</id>
+            <url>http://dev.springsprout.org/nexus/content/repositories/springsprout-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
