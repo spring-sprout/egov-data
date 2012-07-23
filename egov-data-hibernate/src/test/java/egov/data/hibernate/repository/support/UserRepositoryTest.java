@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -33,10 +34,24 @@ public class UserRepositoryTest {
 		keesun.setFirstname("Keesun");
 		keesun.setLastname("Baik");
 
+		// CREATE
 		userRepository.save(keesun);
 
+		// READ
 		List<User> users = userRepository.findAll();
 		assertThat(users.size(), is(1));
+
+		// UPDATE
+		keesun.setActive(false);
+		userRepository.saveAndFlush(keesun);
+
+		keesun = userRepository.findOne(keesun.getId());
+		assertThat(keesun.isActive(), is(false));
+
+		// DELETE
+		userRepository.delete(keesun);
+		assertThat(userRepository.findOne(keesun.getId()), is(nullValue()));
+		assertThat(userRepository.findAll().size(), is(0));
 	}
 
 
