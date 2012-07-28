@@ -7,7 +7,7 @@
        xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd
-		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository//spring-repository.xsd">
+		http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository.xsd">
 
     <import resource="classpath:database-context.xml"/>
     

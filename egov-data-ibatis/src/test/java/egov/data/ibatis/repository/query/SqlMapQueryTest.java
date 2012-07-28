@@ -3,9 +3,7 @@ package egov.data.ibatis.repository.query;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
-import org.mockito.Mockito;
 import org.springframework.data.repository.query.QueryMethod;
-import org.springframework.data.repository.query.QueryMethod.Type;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 import com.ibatis.sqlmap.engine.impl.SqlMapExecutorDelegate;
@@ -35,7 +33,7 @@ public class SqlMapQueryTest {
 	@Test
 	public void COLLECTION을_반환하는_조회쿼리_실행() {
 		when(mappedStatement.getStatementType()).thenReturn(StatementType.SELECT);
-		when(queryMethod.getType()).thenReturn(Type.COLLECTION);
+		when(queryMethod.isCollectionQuery()).thenReturn(true);
 		
 		new SqlMapQuery(queryMethod, delegate, template).execute(null);
 		verify(template).queryForList(namedQueryName, null);
@@ -44,10 +42,10 @@ public class SqlMapQueryTest {
 	@Test
 	public void SINGLE_ENTITY를_반환하는_조회쿼리_실행() {
 		when(mappedStatement.getStatementType()).thenReturn(StatementType.SELECT);
-		when(queryMethod.getType()).thenReturn(Type.SINGLE_ENTITY);
+		when(queryMethod.isCollectionQuery()).thenReturn(false);
 		
 		new SqlMapQuery(queryMethod, delegate, template).execute(null);
-		Mockito.verify(template).queryForObject(namedQueryName, null);
+		verify(template).queryForObject(namedQueryName, null);
 	}
 	
 	@Test
