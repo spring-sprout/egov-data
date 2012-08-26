@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Member">
+
+    <typeAlias alias="Member" type="whiteship.domain.Member"/>
+
+    <select id="findAll" resultClass="Member">
+		SELECT * FROM Member
+    </select>
+
+    <select id="findByName" parameterClass="string" resultClass="Member">
+		SELECT * FROM Member WHERE NAME = #name#
+    </select>
+
+    <select id="findOne" parameterClass="long" resultClass="Member">
+		SELECT * FROM Member WHERE ID = #id#
+    </select>
+
+    <insert id="insert" parameterClass="Member">
+        INSERT INTO Member(NAME) VALUES(#name#);
+        <selectKey resultClass="long" keyProperty="id">
+            CALL IDENTITY()
+        </selectKey>
+    </insert>
+
+    <insert id="insertMap" parameterClass="map">
+        INSERT INTO Member(NAME) VALUES(#name#);
+        <selectKey resultClass="long" keyProperty="id">
+            CALL IDENTITY()
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="Member">
+		UPDATE Member SET NAME = #name# WHERE ID = #id#
+    </update>
+
+    <insert id="saveAndFlush" parameterClass="Member">
+        INSERT INTO Member(NAME) VALUES(#name#);
+        <selectKey resultClass="long" keyProperty="id">
+            CALL IDENTITY()
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterClass="long">
+        DELETE FROM Member WHERE ID = #id#
+    </delete>
+
+</sqlMap>
