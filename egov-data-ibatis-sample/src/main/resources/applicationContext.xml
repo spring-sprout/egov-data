@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:ibatis="http://www.egovframe.org/schema/data/ibatis"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:sqlScript/schema.sql"/>
+        <jdbc:script location="classpath:sqlScript/data.sql"/>
+    </jdbc:embedded-database>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:ibatis/sqlMapConfig.xml" />
+        <property name="mappingLocations" value="classpath:ibatis/sqlmap/*.xml" />
+    </bean>
+
+    <bean class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <!-- ================================== -->
+    <!--         eGov Data iBatis           -->
+    <!-- ================================== -->
+    <ibatis:repositories base-package="whiteship.repository"/>
+
+
+</beans>
