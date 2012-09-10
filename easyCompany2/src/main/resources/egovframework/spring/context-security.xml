@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+
+	<b:bean id="securedObjectService"
+		class="egovframework.rte.fdl.security.securedobject.impl.SecuredObjectServiceImpl">
+		<b:property name="securedObjectDAO" ref="securedObjectDAO" />
+	</b:bean>
+
+	<!--ROLE Hierarchy를 디비로 지정하지 않고, 직접 서술(디비로 할 경우 쿼리문 작성)-->
+	<b:bean id="roleHierarchy"
+		class="org.springframework.security.userdetails.hierarchicalroles.RoleHierarchyImpl">
+		<b:property name="hierarchy">
+			<b:value>
+				ROLE_ADMIN > ROLE_USER
+				ROLE_USER > ROLE_RESTRICTED
+				ROLE_RESTRICTED > IS_AUTHENTICATED_FULLY
+				IS_AUTHENTICATED_FULLY >	IS_AUTHENTICATED_REMEMBERED
+				IS_AUTHENTICATED_REMEMBERED > IS_AUTHENTICATED_ANONYMOUSLY
+		</b:value>
+		</b:property>
+	</b:bean>
+
+
+	<b:bean id="securedObjectDAO"
+		class="egovframework.rte.fdl.security.securedobject.impl.SecuredObjectDAO">
+		<b:property name="dataSource" ref="dataSource" />
+		<b:property name="sqlRolesAndUrl">
+			<b:value>
+				SELECT AUTH.URL URL, CODE.CODE_NM AUTHORITY
+				FROM RTETNAUTH AUTH, RTETCCODE CODE
+				WHERE CODE.CODE_ID = AUTH.MNGR_SE
+			</b:value>
+		</b:property>
+	</b:bean>
+
+
+	<b:bean id="userDetailsServiceWrapper"
+		class="org.springframework.security.userdetails.hierarchicalroles.UserDetailsServiceWrapper">
+		<b:property name="roleHierarchy" ref="roleHierarchy" />
+		<b:property name="userDetailsService" ref="jdbcUserService" />
+	</b:bean>
+
+
+	<b:bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+		<b:property name="allowIfAllAbstainDecisions" value="false" />
+		<b:property name="decisionVoters">
+			<b:list>
+				<b:bean class="org.springframework.security.vote.RoleVoter">
+					<b:property name="rolePrefix" value="" />
+				</b:bean>
+				<b:bean class="org.springframework.security.vote.AuthenticatedVoter" />
+			</b:list>
+		</b:property>
+	</b:bean>
+
+	<!-- URL 자원관리 START -->
+
+	<b:bean id="filterSecurityInterceptor"
+		class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+		<custom-filter before="FILTER_SECURITY_INTERCEPTOR" />
+		<b:property name="authenticationManager" ref="authenticationManager" />
+		<b:property name="accessDecisionManager" ref="accessDecisionManager" />
+		<b:property name="objectDefinitionSource" ref="databaseObjectDefinitionSource" />
+	</b:bean>
+
+	<b:bean id="databaseObjectDefinitionSource"
+		class="org.springframework.security.intercept.web.EgovReloadableDefaultFilterInvocationDefinitionSource">
+		<b:constructor-arg ref="regexUrlPathMatcher" />
+		<b:constructor-arg ref="requestMap" />
+		<b:property name="securedObjectService" ref="securedObjectService" />
+	</b:bean>
+
+	<b:bean id="requestMap"
+		class="egovframework.rte.fdl.security.intercept.ResourcesMapFactoryBean"
+		init-method="init">
+		<b:property name="securedObjectService" ref="securedObjectService" />
+		<b:property name="resourceType" value="url" />
+	</b:bean>
+
+	<b:bean id="regexUrlPathMatcher"
+		class="org.springframework.security.util.RegexUrlPathMatcher" />
+
+	<!-- URL 자원관리 END -->
+
+	<b:bean id="exceptionTranslationFilter"
+		class="org.springframework.security.ui.ExceptionTranslationFilter">
+		<b:property name="authenticationEntryPoint" ref="formAuthenticationEntryPoint" />
+		<b:property name="accessDeniedHandler">
+			<b:bean class="egovframework.rte.tex.com.EgovAccessDeniedHandlerImpl">
+				<b:property name="errorPage" value="/com/accessDenied.do" />
+			</b:bean>
+		</b:property>
+	</b:bean>
+	
+	<b:bean id="formAuthenticationEntryPoint"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<b:property name="loginFormUrl" value="/login.jsp" />
+		<b:property name="forceHttps" value="false" />
+	</b:bean>	
+
+	<!-- url start -->
+
+    <http access-denied-page="/com/accessDenied.do" path-type="regex" lowercase-comparisons="false" >
+        <form-login login-processing-url="/j_spring_security_check"
+                    authentication-failure-url="/mbr/loginView.do?login_error=1"
+                    always-use-default-target="true"     
+                    default-target-url="/mbr/actionMain.do"
+                    login-page="/mbr/loginView.do?login_error=0" />
+               
+        <anonymous/>
+        <logout logout-url="/j_spring_security_logout" logout-success-url="/com/egovMain.do" />
+        <concurrent-session-control max-sessions="10" exception-if-maximum-exceeded="false" expired-url="/index.jsp" />
+    </http>
+
+	<authentication-manager alias="authenticationManager" />
+	<authentication-provider user-service-ref="jdbcUserService" >
+		<!-- 패스워드 인코더를 설정할 경우 -->
+		<password-encoder hash="md5" />
+		<!-- -->
+	</authentication-provider>
+
+	<!-- Url end -->
+
+	<b:bean id="jdbcUserService"
+		class="egovframework.rte.fdl.security.userdetails.jdbc.EgovJdbcUserDetailsManager">
+		<b:property name="usersByUsernameQuery"
+			value="
+            SELECT  
+	            MBER_ID USER_ID
+	            , PASSWORD PASSWORD
+	            , 1 ENABLED
+	            , MBER_NO USER_NO
+            	,	NM USER_NM
+            	,	EMAIL USER_EMAIL
+            	,	TELNO	TEL_NO
+            	,	MBTLNUM MOBLPHON_NO
+            	,	ZIP USER_ZIP
+            	,	ADRES USER_ADRES
+            	,	DETAIL_ADRES USER_DETAIL_ADRES
+            	,	CODE.CODE_NM	AUTHOR_CODE
+              FROM  RTETNMBER MBER, RTETCCODE CODE
+             WHERE  CODE.CODE_ID = MBER.MNGR_SE AND MBER_ID = ?
+            " />
+		<b:property name="authoritiesByUsernameQuery"
+			value="
+            SELECT  MBER_ID      USER_ID
+                 ,  CODE_NM         AUTHORITY
+              FROM  RTETNMBER MBER, RTETCCODE CODE
+             WHERE  CODE.CODE_ID = MBER.MNGR_SE AND MBER_ID = ?
+			" />
+		<b:property name="roleHierarchy" ref="roleHierarchy" />
+		<b:property name="dataSource" ref="dataSource" />
+		<b:property name="mapClass" value="egovframework.rte.tex.com.security.EgovSessionMapping" />
+	</b:bean>
+</b:beans>

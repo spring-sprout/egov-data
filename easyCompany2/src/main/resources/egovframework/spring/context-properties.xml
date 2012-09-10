@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+								http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+		<property name="properties">
+			<map>
+				<entry key="pageUnit" value="10" />
+				<entry key="pageSize" value="10" />
+			</map>
+		</property>
+	</bean>
+
+
+		<!-- 메일 정보를 Property로 적용할 경우 -->
+<!-- 	<bean name="mailInfoService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy"> -->
+<!-- 		<property name="properties"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="hostName" value="smtp.googlemail.com" /> -->
+<!-- 				<entry key="port" value="587" /> -->
+<!-- 				<entry key="mailId" value="egovmailtest@gmail.com" /> -->
+<!-- 				<entry key="mailPass" value="egov2011" /> -->
+<!-- 				<entry key="mailName" value="EgovTest" /> -->
+<!-- 				<entry key="subject" value="[easyCompany2] New Password" /> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+		<!-- 메일 정보를 SpEL적용 할 경우 -->
+    <util:properties id="mailInfoService" location="classpath:/egovframework/property/mail.properties" />
+
+</beans>

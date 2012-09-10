@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<sqlMap resource="egovframework/sqlmap/rte/tex/query/mysql/EgovGoods_SQL_mysql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/rte/tex/query/mysql/EgovBoard_SQL_mysql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/rte/tex/query/mysql/EgovPurchase_SQL_mysql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/rte/tex/query/mysql/EgovDelivery_SQL_mysql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/rte/tex/query/mysql/EgovMember_SQL_mysql.xml"/> 
+</sqlMapConfig>

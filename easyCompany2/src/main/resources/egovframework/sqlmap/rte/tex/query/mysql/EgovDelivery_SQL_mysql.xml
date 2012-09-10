@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Delivery">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="searchVO" type="egovframework.rte.tex.com.service.SearchVO"/>
+	<typeAlias  alias="purchaseVO" type="egovframework.rte.tex.pcs.service.PurchaseVO"/>
+		
+	<resultMap id="purchase" class="purchaseVO">
+		<result property="purchsId" column="purchs_id"/>
+		<result property="goodsVO" resultMap="Delivery.goods"/>
+		<result property="mberNo" column="mber_no"/>
+		<result property="qy" column="qy"/>
+		<result property="purchsDe" column="purchs_de"/>
+		<result property="dlvySe" column="dlvy_se"/>
+	</resultMap>
+	
+	<resultMap id="goods" class="egovframework.rte.tex.gds.service.GoodsVO">
+		<result property="goodsId" column="goods_id"/>
+		<result property="goodsNm" column="goods_nm"/>
+		<result property="price" column="price"/>
+	</resultMap>
+	
+	<select id="deliveryDAO.selectPurchaseList" parameterClass="purchaseVO" resultMap="purchase">
+		SELECT
+			A.PURCHS_ID, A.MBER_NO, A.QY, A.PURCHS_DE, C.DLVY_STTUS AS DLVY_SE, B.GOODS_ID, B.GOODS_NM, B.PRICE
+		FROM 
+			RTETNPURCHSLIST A, RTETNGOODS B, RTETNDLVYINFO C
+		WHERE 
+				A.GOODS_ID = B.GOODS_ID 
+			AND
+				A.DLVY_SE = C.DLVY_SE
+			AND
+				A.MBER_NO = #mberNo#
+			AND
+				B.GOODS_NM LIKE CONCAT('%',#searchKeyword#,'%')
+		ORDER BY 
+			PURCHS_ID DESC 
+		LIMIT #firstIndex#, #recordCountPerPage# 
+	</select>
+	
+	<select id="deliveryDAO.selectAllPurchaseList" parameterClass="purchaseVO" resultMap="purchase">
+		SELECT
+			A.PURCHS_ID, A.MBER_NO, A.QY, A.PURCHS_DE, A.DLVY_SE, B.GOODS_ID, B.GOODS_NM, B.PRICE
+		FROM 
+			RTETNPURCHSLIST A, RTETNGOODS B 
+		WHERE 
+				A.GOODS_ID = B.GOODS_ID 
+			AND
+				B.GOODS_NM LIKE CONCAT('%',#searchKeyword#,'%')
+		ORDER BY 
+			PURCHS_ID DESC 
+		LIMIT #firstIndex#, #recordCountPerPage#
+	</select>
+
+	<select id="deliveryDAO.selectAllPurchaseXml" resultMap="purchase">
+		SELECT
+			A.PURCHS_ID, A.MBER_NO, A.QY, A.PURCHS_DE, A.DLVY_SE, B.GOODS_ID, B.GOODS_NM, B.PRICE
+		FROM 
+			RTETNPURCHSLIST A, RTETNGOODS B 
+		WHERE 
+			A.GOODS_ID = B.GOODS_ID 
+		ORDER BY 
+			PURCHS_ID DESC 
+	</select>
+	
+	<select id="deliveryDAO.selectDeliveryInfoList" resultClass="egovMap">
+		SELECT 
+			*
+		FROM 
+			RTETNDLVYINFO
+	</select>
+	
+	<select id="deliveryDAO.selectDeleveryInfoListTotCnt" parameterClass="purchaseVO" resultClass="int">
+		SELECT 
+			COUNT(*) totcnt
+		FROM 
+			RTETNPURCHSLIST A, RTETNGOODS B 
+		WHERE 
+			A.GOODS_ID = B.GOODS_ID 
+			AND B.GOODS_NM LIKE CONCAT('%',#searchKeyword#,'%')
+			AND A.MBER_NO = #mberNo#
+	</select>
+	
+	<select id="deliveryDAO.selectAllDeleveryInfoListTotCnt" parameterClass="purchaseVO" resultClass="int">
+		SELECT 
+			COUNT(*) totcnt
+		FROM 
+			RTETNPURCHSLIST A, RTETNGOODS B 
+		WHERE
+			A.GOODS_ID = B.GOODS_ID AND B.GOODS_NM LIKE CONCAT('%',#searchKeyword#,'%')
+	</select>
+	
+	<update id="deliveryDAO.updateDeleveryInfo" parameterClass="purchaseVO">
+		<![CDATA[
+	   	 	UPDATE 
+	   	 		RTETNPURCHSLIST
+	   	 	SET 
+	   	 		DLVY_SE = #dlvySe#
+   		 	WHERE 
+   		 		PURCHS_ID = #purchsId#
+   		 ]]>
+	</update>
+	
+</sqlMap>

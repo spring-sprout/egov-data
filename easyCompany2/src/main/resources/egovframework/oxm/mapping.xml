@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+	<description>Description of the mapping</description>
+	<class name="egovframework.rte.tex.gds.service.GoodsVO">
+		<map-to xml="Goods" />
+		<field name="goodsNm" type="string">
+			<bind-xml name="name" node="element" />
+		</field>
+		<field name="price" type="integer">
+			<bind-xml name="price" node="element" />
+		</field>
+		<field name="categoryVO" type="egovframework.rte.tex.cgr.service.CategoryVO">
+		<bind-xml name="categoryVO" />
+		</field>
+		<field name="makr" type="string">
+			<bind-xml name="maker" node="element" />
+		</field>
+	</class>
+
+	<class name="egovframework.rte.tex.cgr.service.CategoryVO">
+		<field name="ctgryNm" type="string">
+			<bind-xml name="category" node="element" />
+		</field>
+		<field name="dc" type="string">
+			<bind-xml name="description" node="element" />
+		</field>
+	</class>
+</mapping>
+

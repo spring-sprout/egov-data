@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+	<formset>
+		<form name="goodsVO">
+			<field property="goodsNm" depends="required">
+				<arg0 key="goods.goodsNm" />
+			</field>
+			<field property="price" depends="required,integer">
+				<arg0 key="goods.price" />
+			</field>
+			<field property="categoryVO.ctgryNm" depends="required">
+				<arg0 key="goods.ctgryNm" />
+			</field>
+			<field property="makr" depends="required">
+				<arg0 key="goods.makr" />
+			</field>
+		</form>
+	</formset>
+
+	<formset>
+		<form name="boardVO">
+			<field property="title" depends="required">
+				<arg0 key="board.header.title" />
+			</field>
+			<field property="contents" depends="required">
+				<arg0 key="board.header.contents" />
+			</field>
+		</form>
+	</formset>
+
+<!-- memberVO, categoryVO는 JRS-303 validation으로 처리 -->
+
+</form-validation>

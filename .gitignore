@@ -10,3 +10,8 @@
 # Maven
 target/
 
+# Example
+easyCompany2/src/main/webapp/WEB-INF/classes
+easyCompany2/src/main/webapp/WEB-INF/lib
+
+

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Member">
+
+	<typeAlias alias="egovMap"
+		type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+
+	<resultMap id="memberVO" class="egovframework.rte.tex.mbr.service.MemberVO">
+		<result property="memberNo" column="mber_no" />
+		<result property="id" column="mber_id" />
+		<result property="password" column="password" />
+		<result property="name" column="nm" />
+		<result property="email" column="email" />
+		<result property="telno" column="telno" />
+		<result property="mobile" column="mbtlnum" />
+		<result property="zip" column="zip" />
+		<result property="adres" column="adres" />
+		<result property="detailAdres" column="detail_adres" />
+		<result property="lastChangeDt" column="last_change_dt" />
+		<result property="mngrSe" column="mngr_se" />
+	</resultMap>
+
+	<select id="memberDAO.getMember" resultMap="memberVO">
+		<![CDATA[
+			SELECT
+				MBER_NO, NM, MBER_ID, PASSWORD, EMAIL, TELNO, MBTLNUM, ZIP, ADRES, DETAIL_ADRES ,LAST_CHANGE_DT, MNGR_SE
+			FROM RTETNMBER
+			WHERE MBER_ID=#id# AND PASSWORD=#password#
+		]]>
+	</select>
+
+	<select id="memberDAO.checkIdDplct" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM RTETNMBER
+			WHERE MBER_ID=#checkId#
+		]]>
+	</select>
+
+	<insert id="memberDAO.insertMember">
+		<![CDATA[
+			INSERT INTO RTETNMBER (
+  			   MBER_NO
+  			 , NM
+  			 , MBER_ID
+  			 , PASSWORD
+  			 , EMAIL
+  			 , TELNO
+  			 , MBTLNUM
+  			 , ZIP
+  			 , ADRES
+  			 , DETAIL_ADRES
+  			 , LAST_CHANGE_DT
+  			 , MNGR_SE
+			) VALUES (
+			  #memberNo#
+			  , #name#
+			  , #id#
+			  , #password#
+			  , #email#
+			  , #telno#
+			  , #mobile#
+			  , #zip#
+			  , #adres#
+			  , #detailAdres#
+			  , sysdate
+			  , #mngrSe#
+			) 
+		]]>
+	</insert>
+
+	<update id="memberDAO.updateMember">
+		<![CDATA[
+			UPDATE RTETNMBER 
+			SET NM=#name#
+				, MBER_ID=#id#
+				, PASSWORD=#password#
+				, EMAIL=#email#
+				, TELNO=#telno#
+				, MBTLNUM=#mobile#
+				, ZIP=#zip#
+				, ADRES=#adres#
+				, DETAIL_ADRES=#detailAdres#
+				, LAST_CHANGE_DT=sysdate
+				, MNGR_SE=#mngrSe#
+			WHERE MBER_NO=#memberNo#
+		]]>
+	</update>
+
+	<delete id="memberDAO.deleteMember">
+		<![CDATA[
+			DELETE FROM RTETNMBER 
+			WHERE MBER_NO=#memberNo#
+		]]>
+	</delete>
+
+
+	<select id="memberDAO.searchPassword" resultMap="memberVO">
+		<![CDATA[
+			SELECT
+				MBER_NO, MBER_ID, NM, PASSWORD, EMAIL, TELNO, MBTLNUM, ZIP, ADRES, DETAIL_ADRES, MNGR_SE, LAST_CHANGE_DT
+			FROM RTETNMBER
+			WHERE MBER_ID=#id# AND EMAIL=#email#
+		]]>
+	</select>
+
+	<update id="memberDAO.changePassword">
+		<![CDATA[
+			UPDATE RTETNMBER 
+			SET PASSWORD=#password#
+				, LAST_CHANGE_DT=sysdate
+			WHERE MBER_ID=#id#
+		]]>
+	</update>
+
+</sqlMap>

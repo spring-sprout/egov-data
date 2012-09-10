@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Goods">
+
+	<typeAlias alias="egovMap"
+		type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="searchVO" type="egovframework.rte.tex.com.service.SearchVO" />
+
+	<resultMap id="goods" class="egovframework.rte.tex.gds.service.GoodsVO">
+		<result property="goodsId" column="goods_id" />
+		<result property="goodsNm" column="goods_nm" />
+		<result property="price" column="price" />
+		<result property="categoryVO" resultMap="Goods.category" />
+		<result property="goodsImageVO" resultMap="Goods.goodsImage" />
+		<result property="makr" column="makr" />
+		<result property="detailImageVO" resultMap="Goods.detailImage" />
+		<result property="useAt" column="use_at" />
+	</resultMap>
+
+	<resultMap id="category" class="egovframework.rte.tex.cgr.service.CategoryVO">
+		<result property="ctgryId" column="ctgry_id" />
+		<result property="ctgryNm" column="ctgry_nm" />
+	</resultMap>
+
+	<resultMap id="goodsImage"
+		class="egovframework.rte.tex.gds.service.GoodsImageVO">
+		<result property="goodsImageId" column="goods_image_id" />
+		<result property="fileNm" column="file_nm" />
+	</resultMap>
+
+	<resultMap id="detailImage"
+		class="egovframework.rte.tex.gds.service.GoodsImageVO">
+		<result property="goodsImageId" column="detail_info_image_id" />
+		<result property="fileNm" column="detail_file_nm" />
+	</resultMap>
+
+	<insert id="goodsDAO.insertGoods">
+		<![CDATA[
+			INSERT INTO RTETNGOODS (
+  			 GOODS_ID
+		 	,GOODS_NM
+		  	,PRICE
+			,CTGRY_ID
+			,DETAIL_INFO_IMAGE_ID
+			,MAKR
+			,GOODS_IMAGE_ID
+			, USE_AT
+			) VALUES (
+			  #goodsId# 
+			 ,#goodsNm#  
+			 ,#price#   
+			 ,#categoryVO.ctgryId#
+			 ,#detailImageVO.goodsImageId#
+			 ,#makr#
+			 ,#goodsImageVO.goodsImageId#
+			 , '1'
+			) 
+		]]>
+	</insert>
+
+	<insert id="goodsDAO.insertGoodsImage">
+		<![CDATA[
+			INSERT INTO RTETNGOODSIMAGE (
+			 GOODS_IMAGE_ID
+			,FILE_NM
+			) VALUES (
+			  #goodsImageId#
+			 ,#fileNm#
+			) 
+		]]>
+	</insert>
+
+	<select id="goodsDAO.selectGoodsList" parameterClass="searchVO"
+		resultClass="egovMap">
+				
+		<![CDATA[
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        ]]>
+        <![CDATA[
+			SELECT
+				GOODS_ID, GOODS_NM, PRICE, GOODS_IMAGE_ID
+			FROM RTETNGOODS
+			WHERE USE_AT='1'  ]]>
+			<isNotEmpty prepend="AND" property="searchKeyword"> 
+				<![CDATA[GOODS_NM LIKE CONCAT('%',CONCAT(#searchKeyword#,'%'))]]>
+			</isNotEmpty>
+		<![CDATA[	ORDER BY GOODS_ID DESC
+				) ALL_LIST
+				)
+				  WHERE  RNUM  > #firstIndex#
+	               AND  RNUM <= #firstIndex# + #recordCountPerPage#]]>
+	</select>
+
+	<update id="goodsDAO.updateGoods">
+		<![CDATA[
+			UPDATE RTETNGOODS 
+			SET
+			   GOODS_ID = #goodsId#
+			  ,GOODS_NM = #goodsNm#  
+			  ,PRICE = #price#
+			  ,CTGRY_ID = #categoryVO.ctgryId#
+			  ,GOODS_IMAGE_ID = #goodsImageVO.goodsImageId# 
+			  ,DETAIL_INFO_IMAGE_ID = #detailImageVO.goodsImageId#
+			  ,MAKR = #makr#
+			WHERE GOODS_ID = #goodsId#
+		]]>
+	</update>
+	
+	<update id="goodsDAO.updateGoodsImage">
+		<![CDATA[
+			UPDATE RTETNGOODSIMAGE 
+			SET
+			 GOODS_IMAGE_ID =  #goodsImageId#
+			,FILE_NM = #fileNm#
+			WHERE GOODS_IMAGE_ID = #goodsImageId#
+		]]>
+	</update>
+	
+	<update id="goodsDAO.deleteGoods">
+		<![CDATA[
+			UPDATE RTETNGOODS 
+			SET
+			  USE_AT='0',
+			  CTGRY_ID='CATEGORY-00000000000'
+			WHERE GOODS_ID = #goodsId#
+		]]>
+	</update>
+
+	<delete id="goodsDAO.deleteCart">
+		<![CDATA[
+			DELETE FROM RTETNCART 
+			WHERE GOODS_ID = #goodsId#
+		]]>
+	</delete>
+	
+	<delete id="goodsDAO.deleteGoodsImage" parameterClass="String">
+		<![CDATA[
+			DELETE FROM RTETNGOODSIMAGE 
+			WHERE GOODS_IMAGE_ID = #value#
+		]]>
+	</delete>
+
+	<select id="goodsDAO.selectGoods" resultMap="goods">
+		<![CDATA[
+			SELECT
+				A.GOODS_ID, A.GOODS_NM, A.PRICE, A.CTGRY_ID, B.GOODS_IMAGE_ID,
+				C.GOODS_IMAGE_ID AS DETAIL_INFO_IMAGE_ID, A.MAKR, B.FILE_NM, C.FILE_NM AS DETAIL_FILE_NM, D.CTGRY_NM, A.USE_AT
+			FROM RTETNGOODS A, RTETNGOODSIMAGE B, RTETNGOODSIMAGE C, RTETNCTGRY D
+			WHERE GOODS_ID = #goodsId# AND A.GOODS_IMAGE_ID = B.GOODS_IMAGE_ID AND
+			      A.DETAIL_INFO_IMAGE_ID = C.GOODS_IMAGE_ID AND A.CTGRY_ID = D.CTGRY_ID
+		]]>
+	</select>
+
+	<select id="goodsDAO.selectGoodsListTotCnt" parameterClass="searchVO" resultClass="int">
+			<![CDATA[SELECT COUNT(*) totcnt
+						FROM RTETNGOODS
+						WHERE USE_AT = '1']]>
+		<isNotEmpty prepend="AND" property="searchKeyword"> 
+			<![CDATA[GOODS_NM LIKE CONCAT('%',CONCAT(#searchKeyword#,'%'))]]>
+		</isNotEmpty>
+	</select>
+	
+	<select id="goodsDAO.selectGoodsXml" resultMap="goods">
+		<![CDATA[	
+			SELECT
+				G.GOODS_ID, G.GOODS_NM, G.PRICE, G.GOODS_IMAGE_ID, G.MAKR, C.CTGRY_ID, C.CTGRY_NM, I.GOODS_IMAGE_ID, I.FILE_NM, D.GOODS_IMAGE_ID DETAIL_INFO_IMAGE_ID, D.FILE_NM detail_file_nm, G.USE_AT
+			FROM 
+				RTETNGOODS G, RTETNCTGRY C, RTETNGOODSIMAGE I, RTETNGOODSIMAGE D
+			WHERE 
+				G.CTGRY_ID = C.CTGRY_ID 
+				AND G.GOODS_IMAGE_ID=I.GOODS_IMAGE_ID
+				AND G.DETAIL_INFO_IMAGE_ID=D.GOODS_IMAGE_ID
+				AND G.USE_AT = '1'
+			ORDER BY GOODS_ID DESC
+		 ]]>
+	</select>
+
+</sqlMap>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+
+	<description>Description of the mapping</description>
+	<class name="egovframework.rte.tex.pcs.service.PurchaseVO">
+		<map-to xml="Purchase" />
+		<field name="purchsId" type="string">
+			<bind-xml name="purchsId" node="element" />
+		</field>
+		<field name="mberNo" type="string">
+			<bind-xml name="mberNo" node="element" />
+		</field>
+		<field name="goodsVO" type="egovframework.rte.tex.gds.service.GoodsVO">
+			<bind-xml name="goodsVO" />
+		</field>
+		<field name="qy" type="integer">
+			<bind-xml name="qy" node="element" />
+		</field>
+		<field name="purchsDe" type="string">
+			<bind-xml name="purchsDe" node="element" />
+		</field>
+		<field name="dlvySe" type="string">
+			<bind-xml name="dlvySe" node="element" />
+		</field>
+	</class>
+
+	<class name="egovframework.rte.tex.gds.service.GoodsVO">
+		<field name="goodsId" type="string">
+			<bind-xml name="goodsId" node="element" />
+		</field>
+		<field name="goodsNm" type="string">
+			<bind-xml name="goodsNm" node="element" />
+		</field>
+		<field name="price" type="integer">
+			<bind-xml name="price" node="element" />
+		</field>
+		<field name="makr" type="string">
+			<bind-xml name="makr" node="element" />
+		</field>
+	</class>
+</mapping>
+

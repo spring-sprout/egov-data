@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean name="egovIdGnrServiceGds"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixGoods" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNGOODS"/>
+	</bean>
+
+	<bean name="mixPrefixGoods"
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="GOODS-" />
+		<property name="cipers" value="14" />
+		<property name="fillChar" value="0" />
+	</bean>	
+	
+	<bean name="egovIdGnrServiceImage"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixImage" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNGOODSIMAGE"/>
+	</bean>
+
+	<bean name="mixPrefixImage"
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="IMAGE-" />
+		<property name="cipers" value="10" />
+		<property name="fillChar" value="0" />
+	</bean>	
+	
+	<bean name="egovIdGnrServiceBrd"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixBoard" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNBBS"/>
+	</bean>
+
+	<bean name="mixPrefixBoard"
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="BOARD-" />
+		<property name="cipers" value="14" />
+		<property name="fillChar" value="0" />
+	</bean>	
+	
+	<bean name="egovIdGnrServiceCgr"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixCategory" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNCTGRY"/>
+	</bean>
+
+	<bean name="mixPrefixCategory" 
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="CATEGORY-" />
+		<property name="cipers" value="11" />
+		<property name="fillChar" value="0" />
+	</bean>	
+	
+	<bean name="egovIdGnrServiceCart"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixCart" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNCART"/>
+	</bean>
+
+	<bean name="mixPrefixCart"
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="CART-" />
+		<property name="cipers" value="15" />
+		<property name="fillChar" value="0" />
+	</bean>	
+		
+	<bean name="egovIdGnrServicePurchs"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixPurchs" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNPURCHSLIST"/>
+	</bean>
+
+	<bean name="mixPrefixPurchs"
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="PURCHS-" />
+		<property name="cipers" value="13" />
+		<property name="fillChar" value="0" />
+	</bean>	
+	
+	<bean name="egovIdGnrServiceMbr"
+		class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService"
+		destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="mixPrefixMbr" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="IDS"/>
+		<property name="tableName"	value="RTETNMBER"/>
+	</bean>
+
+	<bean name="mixPrefixMbr"
+		class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="MEMBER-" />
+		<property name="cipers" value="13" />
+		<property name="fillChar" value="0" />
+	</bean>	
+	
+</beans>

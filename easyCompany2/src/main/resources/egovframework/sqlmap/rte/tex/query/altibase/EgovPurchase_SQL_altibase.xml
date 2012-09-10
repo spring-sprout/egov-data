@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Purchase">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="searchVO" type="egovframework.rte.tex.com.service.SearchVO"/>
+	
+	<resultMap id="cart" class="egovframework.rte.tex.pcs.service.CartVO">
+		<result property="cartId" column="cart_id"/>
+		<result property="mberNo" column="mber_no"/>
+		<result property="goodsVO" resultMap="Purchase.goods"/>
+		<result property="qy" column="qy"/>
+	</resultMap>
+	
+	<resultMap id="goods" class="egovframework.rte.tex.gds.service.GoodsVO">
+		<result property="goodsId" column="goods_id"/>
+		<result property="goodsNm" column="goods_nm"/>
+		<result property="price" column="price"/>
+	</resultMap>
+	
+	<insert id="cartDAO.insertCart">
+		<![CDATA[
+			INSERT INTO RTETNCART (
+			   CART_ID
+			  ,MBER_NO
+			  ,GOODS_ID
+			  ,QY
+			) VALUES (
+			  #cartId# 
+			 ,#mberNo#  
+			 ,#goodsVO.goodsId#   
+			 ,#qy#
+			) 
+		]]>
+	</insert>
+
+	<select id="cartDAO.selectCartList" resultMap="cart">
+		<![CDATA[
+			SELECT
+				A.CART_ID, A.MBER_NO, A.QY, B.GOODS_ID, B.GOODS_NM, B.PRICE
+			FROM RTETNCART A, RTETNGOODS B 
+			WHERE
+				A.GOODS_ID = B.GOODS_ID 
+				AND A.MBER_NO = #mberNo#
+		]]>
+			<isNotEmpty prepend="AND" property="searchKeyword"> 
+				<![CDATA[B.GOODS_NM LIKE CONCAT('%',CONCAT(#searchKeyword#,'%'))]]>
+			</isNotEmpty>
+			<![CDATA[ ORDER BY A.CART_ID DESC   ]]>
+	</select>
+
+	<select id="cartDAO.selectCart" resultMap="cart" parameterClass="String">
+		<![CDATA[
+			SELECT
+				A.CART_ID, A.MBER_NO, A.QY, B.GOODS_ID, B.GOODS_NM, B.PRICE
+			FROM RTETNCART A, RTETNGOODS B 
+			WHERE A.GOODS_ID = B.GOODS_ID AND A.CART_ID = #value#
+		]]>
+	</select>
+	
+	<delete id="cartDAO.deleteCart" parameterClass="String">
+		<![CDATA[
+			DELETE FROM RTETNCART 
+			WHERE CART_ID = #value#
+		]]>
+	</delete>
+	
+	<select id="cartDAO.selectCartListTotCnt"  resultClass="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*) totcnt
+			FROM 
+				RTETNCART A, RTETNGOODS B 
+			WHERE 
+				A.GOODS_ID = B.GOODS_ID 
+				AND A.MBER_NO = #mberNo#
+		 ]]>
+			<isNotEmpty prepend="AND" property="searchKeyword"> 
+				<![CDATA[B.GOODS_NM LIKE CONCAT('%',CONCAT(#searchKeyword#,'%')) ]]>
+			</isNotEmpty>
+				<![CDATA[ORDER BY B.GOODS_ID DESC   ]]>
+	</select>
+
+	<insert id="purchaseDAO.insertPurchase">
+		<![CDATA[
+			INSERT INTO RTETNPURCHSLIST (
+			   GOODS_ID
+			  ,MBER_NO
+			  ,QY
+			  ,PURCHS_DE
+			  ,DLVY_SE
+			  ,PURCHS_ID
+			) VALUES (
+			   #goodsVO.goodsId#
+			  ,#mberNo#  
+			  ,#qy#   
+			  ,to_char(sysdate,'YYYYMMDD')
+			  ,'10'
+			  ,#purchsId#
+			)
+		]]>
+	</insert>
+</sqlMap>

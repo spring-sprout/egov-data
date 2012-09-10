@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Board">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="searchVO" type="egovframework.rte.tex.com.service.SearchVO"/>
+
+	<resultMap id="boardVO" class="egovframework.rte.tex.brd.service.BoardVO">
+		<result property="bbscttNo" column="no"/>
+		<result property="title" column="sj"/>
+		<result property="contents" column="cn"/>
+		<result property="rgsde" column="regist_dt"/>
+		<result property="memberNo" column="mber_no"/>
+		<result property="id" column="mber_id"/>
+	</resultMap>
+
+
+	<select id="boardDAO.selectBoardList" parameterClass="searchVO" resultClass="egovMap">
+
+			SELECT
+				BBS.NO, BBS.SJ, BBS.CN, BBS.REGIST_DT, BBS.MBER_ID
+			FROM RTETNBBS BBS
+			WHERE  1=1
+			<isEqual prepend="AND" property="searchCondition" compareValue="0">
+				BBS.MBER_ID LIKE CONCAT('%',#searchKeyword#,'%')
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="1">
+				BBS.SJ LIKE CONCAT('%',#searchKeyword#,'%')
+			</isEqual>
+			ORDER BY BBS.NO DESC
+			LIMIT #firstIndex#, #recordCountPerPage#
+	</select>
+	
+	<insert id="boardDAO.insertBoard">
+		<![CDATA[
+			INSERT INTO RTETNBBS (
+  			 NO
+		 	,SJ
+		  	,CN
+			,REGIST_DT
+			,MBER_NO
+			,MBER_ID
+			) VALUES (
+			  #bbscttNo#
+			 ,#title# 
+			 ,#contents#   
+			 ,sysdate()
+			 ,#memberNo#
+			 ,#id#
+			) 
+		]]>
+	</insert>
+	
+	<update id="boardDAO.updateBoard">
+		<![CDATA[
+			UPDATE RTETNBBS 
+			SET NO=#bbscttNo#
+				, SJ=#title#
+				, CN=#contents#
+				, REGIST_DT=sysdate()
+			WHERE NO=#bbscttNo#
+		]]>
+	</update>
+
+	<delete id="boardDAO.deleteBoard">
+		<![CDATA[
+			DELETE FROM RTETNBBS 
+			WHERE NO=#bbscttNo#
+		]]>
+	</delete>
+
+	<select id="boardDAO.selectBoard" resultMap="boardVO">
+		<![CDATA[
+			SELECT
+				BBS.NO, BBS.SJ, BBS.CN, BBS.REGIST_DT, BBS.MBER_ID, BBS.MBER_NO
+			FROM RTETNBBS BBS
+			WHERE BBS.NO=#bbscttNo#
+		]]>
+	</select>
+	
+	<select id="boardDAO.selectBoardListTotCnt" parameterClass="searchVO" resultClass="int">
+			SELECT
+				COUNT(*)
+			FROM RTETNBBS
+			WHERE 1=1
+			<isEqual prepend="AND" property="searchCondition" compareValue="0">
+				MBER_ID LIKE CONCAT('%',#searchKeyword#,'%')
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="1">
+				SJ LIKE CONCAT('%',#searchKeyword#,'%')
+			</isEqual>
+	</select>
+
+</sqlMap>
