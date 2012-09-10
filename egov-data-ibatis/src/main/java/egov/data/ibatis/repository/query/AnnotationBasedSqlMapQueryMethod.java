@@ -48,7 +48,11 @@ public class AnnotationBasedSqlMapQueryMethod extends QueryMethod {
 			Namespace namespace = repositoryInterface.getAnnotation(Namespace.class);
 			return String.format("%s.%s", namespace.value(), getName());
 		}
-		
+
+		if(method.isAnnotationPresent(Statement.class)) {
+			return getName();
+		}
+
 		return super.getNamedQueryName();
 	}
 	
