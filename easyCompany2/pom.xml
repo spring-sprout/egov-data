@@ -12,7 +12,8 @@
 
 	<properties>
 		<!-- Spring version -->
-		<spring.maven.artifact.version>3.0.5.RELEASE</spring.maven.artifact.version>
+		<spring.maven.artifact.version>3.1.1.RELEASE</spring.maven.artifact.version>
+        <encoding>UTF-8</encoding>
 	</properties>
 
 	<repositories>
@@ -68,6 +69,12 @@
 
 
 	<dependencies>
+        <!-- eGov Data iBatis -->
+        <dependency>
+            <groupId>egov-data</groupId>
+            <artifactId>egov-data-ibatis</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
 		<!-- Spring Framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -292,13 +299,13 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.11</version>
+			<version>1.6.6</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.11</version>
+			<version>1.6.6</version>
 		</dependency>
 
 		<dependency>

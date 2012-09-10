@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:ibatis="http://www.egovframe.org/schema/data/ibatis"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.egovframe.org/schema/data/ibatis http://www.egovframe.org/schema/data/ibatis/egov-ibatis.xsd">
+
+    <ibatis:repositories base-package="egovframework.rte.tex"/>
+
+</beans>
