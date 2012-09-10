@@ -17,6 +17,7 @@ package egovframework.rte.tex.dlv.service.impl;
 
 import java.util.List;
 
+import egovframework.rte.tex.dlv.service.DeliveryDAO;
 import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
@@ -37,7 +38,7 @@ import egovframework.rte.tex.pcs.service.PurchaseVO;
  * </pre>
  */
 @Repository("deliveryDAO")
-public class DeliveryDAO extends EgovAbstractDAO {
+public class DeliveryDAOImpl extends EgovAbstractDAO implements DeliveryDAO {
 
 	/**
 	 * 데이터 베이스에서 사용자의 입찰내역 조회한다.
