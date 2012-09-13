@@ -1,5 +1,8 @@
 package whiteship.legacy;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.stereotype.Repository;
 import whiteship.domain.Member;
 
 import java.util.List;
@@ -7,30 +10,34 @@ import java.util.List;
 /**
  * @author Keesun Baik
  */
+@Repository
 public class MemberRepositoryIbatis implements MemberRepository {
+
+	@Autowired SqlMapClientTemplate template;
 
     @Override
     public void add(Member member) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        template.insert("insert", member);
     }
 
     @Override
     public void update(Member member) {
-        //To change body of implemented methods use File | Settings | File Templates.
+	    template.update("update", member);
     }
 
     @Override
     public Member getById(long id) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return (Member) template.queryForObject("findOne", id);
     }
 
     @Override
     public List<Member> getAll() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return template.queryForList("findAll");
     }
 
     @Override
     public void delete(long id) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        template.delete("delete", id);
     }
+
 }
