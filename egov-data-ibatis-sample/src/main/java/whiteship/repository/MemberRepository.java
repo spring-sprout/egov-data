@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface MemberRepository extends SqlMapRepository<Member, Long> {
 
-	void add(Member member);
+	void insert(Member member);  // => Member.insert
 
-	void update(Member member);
+	void update(Member member); // => Member.update
 
 	Member findOne(long id);
 

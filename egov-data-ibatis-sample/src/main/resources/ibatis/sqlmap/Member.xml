@@ -18,7 +18,7 @@
 		SELECT * FROM Member WHERE ID = #id#
     </select>
 
-    <insert id="add" parameterClass="Member">
+    <insert id="insert" parameterClass="Member">
         INSERT INTO Member(NAME) VALUES(#name#);
         <selectKey resultClass="long" keyProperty="id">
             CALL IDENTITY()

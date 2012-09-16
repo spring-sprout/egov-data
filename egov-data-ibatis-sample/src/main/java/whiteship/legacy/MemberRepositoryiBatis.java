@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Keesun Baik
  */
-@Repository
+//@Repository
 public class MemberRepositoryIbatis implements MemberRepository {
 
 	@Autowired SqlMapClientTemplate template;

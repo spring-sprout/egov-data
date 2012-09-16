@@ -21,7 +21,12 @@ public class MemberRepositoryTest {
 
 	@Test
 	public void crud(){
-
+		Member member = new Member();
+		String name = "스프링 컨퍼런스에 가고 싶은 백기선";
+		member.setName(name);
+		memberRepository.insert(member);
+		Member savedMember = memberRepository.findOne(member.getId());
+		assertThat(savedMember.getName(), is(name));
 	}
 
 
