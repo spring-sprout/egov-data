@@ -9,13 +9,6 @@
 
     <hibernate:repositories base-package="whiteship" />
 
-    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
-          <!--p:driverClass="#{appProperties['db.driverClass']}"-->
-          <!--p:jdbcUrl="#{appProperties['db.jdbcUrl']}"-->
-          <!--p:user="#{appProperties['db.user']}"-->
-          <!--p:password="#{appProperties['db.password']}"-->
-          <!--destroy-method="close" />-->
-
     <jdbc:embedded-database id="dataSource" type="HSQL" />
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

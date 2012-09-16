@@ -17,7 +17,7 @@ public class MemberRepositoryIbatis implements MemberRepository {
 
     @Override
     public void add(Member member) {
-        template.insert("insert", member);
+        template.insert("add", member);
     }
 
     @Override
