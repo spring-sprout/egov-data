@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+	<jdbc:embedded-database id="dataSource" type="HSQL" />
+
+
+	
+ 	<!-- persistenceUnitManager :  -->
+	<bean id="pum" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+ 		<property name="defaultDataSource" ref="dataSource"/>
+ 		<property name="defaultPersistenceUnitName" value="em"/>
+ 		<property name="defaultPersistenceUnitRootLocation" value="classpath:egov/data/jpa/sample"/>
+ 		<property name="packagesToScan" value="egov.data.jpa.sample"/>
+ 	</bean>
+
+	<!-- entityManager : -->
+  	<bean id="em" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitManager" ref="pum" /> 
+		<property name="persistenceUnitName" value="em" />
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+		</property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+		</property>
+		<property name="jpaPropertyMap">
+			<map>
+				<entry key="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
+				<entry key="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+				<entry key="hibernate.hbm2ddl.auto" value="update" />
+				<entry key="hibernate.show_sql" value="true" />
+				<entry key="hibernate.format_sql" value="true" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 'transactionManager' is default value of @Transactional -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	    <property name="entityManagerFactory" ref="em"/>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+	<!-- repositories 	-->
+	<jpa:repositories base-package="egov.data.jpa.sample"
+					factory-class="egov.data.jpa.repository.support.EntityRepositoryFactoryBean" 
+					transaction-manager-ref="transactionManager"  
+					entity-manager-factory-ref="em"/>
+
+</beans>
