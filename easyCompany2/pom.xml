@@ -393,7 +393,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.2-FINAL</version>
+			<version>3.17</version>
 		</dependency>
 
 		<!-- Email (egovframework.com.ems) -->
