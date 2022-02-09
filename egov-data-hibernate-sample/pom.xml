@@ -8,7 +8,7 @@
     <artifactId>egov-data-hibernate-sample</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <properties>
-        <hibernate3.version>3.6.9.Final</hibernate3.version>
+        <hibernate3.version>5.4.24.Final</hibernate3.version>
         <hibernate4.version>4.1.1.Final</hibernate4.version>
         <spring.version>3.0.5.RELEASE</spring.version>
         <java.version>1.6</java.version>
